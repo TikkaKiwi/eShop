@@ -11,7 +11,7 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20240109112507_Initial")]
+    [Migration("20240109161544_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -44,21 +44,6 @@ namespace eShop.Data.Migrations
                     b.ToTable("Brands");
                 });
 
-            modelBuilder.Entity("eShop.Data.Enteties.BrandCar", b =>
-                {
-                    b.Property<int>("CarId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CarId", "BrandId");
-
-                    b.HasIndex("BrandId");
-
-                    b.ToTable("BrandCar");
-                });
-
             modelBuilder.Entity("eShop.Data.Enteties.Car", b =>
                 {
                     b.Property<int>("Id")
@@ -66,6 +51,9 @@ namespace eShop.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Owner")
                         .IsRequired()
@@ -75,6 +63,8 @@ namespace eShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.ToTable("Cars");
                 });
@@ -255,19 +245,15 @@ namespace eShop.Data.Migrations
                     b.ToTable("ModelCars");
                 });
 
-            modelBuilder.Entity("eShop.Data.Enteties.BrandCar", b =>
+            modelBuilder.Entity("eShop.Data.Enteties.Car", b =>
                 {
-                    b.HasOne("eShop.Data.Enteties.Brand", null)
-                        .WithMany()
+                    b.HasOne("eShop.Data.Enteties.Brand", "Brand")
+                        .WithMany("Cars")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("eShop.Data.Enteties.Car", null)
-                        .WithMany()
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Brand");
                 });
 
             modelBuilder.Entity("eShop.Data.Enteties.CarCategory", b =>
@@ -343,6 +329,11 @@ namespace eShop.Data.Migrations
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("eShop.Data.Enteties.Brand", b =>
+                {
+                    b.Navigation("Cars");
                 });
 #pragma warning restore 612, 618
         }

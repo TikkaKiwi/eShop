@@ -25,20 +25,6 @@ namespace eShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cars",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    Owner = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cars", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -109,25 +95,46 @@ namespace eShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BrandCar",
+                name: "Cars",
                 columns: table => new
                 {
-                    BrandId = table.Column<int>(type: "int", nullable: false),
-                    CarId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Owner = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BrandId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BrandCar", x => new { x.CarId, x.BrandId });
+                    table.PrimaryKey("PK_Cars", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BrandCar_Brands_BrandId",
+                        name: "FK_Cars_Brands_BrandId",
                         column: x => x.BrandId,
                         principalTable: "Brands",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FilterCategory",
+                columns: table => new
+                {
+                    FilterId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FilterCategory", x => new { x.CategoryId, x.FilterId });
                     table.ForeignKey(
-                        name: "FK_BrandCar_Cars_CarId",
-                        column: x => x.CarId,
-                        principalTable: "Cars",
+                        name: "FK_FilterCategory_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FilterCategory_Filters_FilterId",
+                        column: x => x.FilterId,
+                        principalTable: "Filters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -181,30 +188,6 @@ namespace eShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FilterCategory",
-                columns: table => new
-                {
-                    FilterId = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FilterCategory", x => new { x.CategoryId, x.FilterId });
-                    table.ForeignKey(
-                        name: "FK_FilterCategory_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FilterCategory_Filters_FilterId",
-                        column: x => x.FilterId,
-                        principalTable: "Filters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FuelCars",
                 columns: table => new
                 {
@@ -253,14 +236,14 @@ namespace eShop.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BrandCar_BrandId",
-                table: "BrandCar",
-                column: "BrandId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CarCategories_CategoryId",
                 table: "CarCategories",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cars_BrandId",
+                table: "Cars",
+                column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ColourCar_ColourId",
@@ -287,9 +270,6 @@ namespace eShop.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BrandCar");
-
-            migrationBuilder.DropTable(
                 name: "CarCategories");
 
             migrationBuilder.DropTable(
@@ -303,9 +283,6 @@ namespace eShop.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ModelCars");
-
-            migrationBuilder.DropTable(
-                name: "Brands");
 
             migrationBuilder.DropTable(
                 name: "Colours");
@@ -324,6 +301,9 @@ namespace eShop.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Models");
+
+            migrationBuilder.DropTable(
+                name: "Brands");
         }
     }
 }
