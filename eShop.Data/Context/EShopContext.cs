@@ -51,7 +51,7 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
 
         #region ProductSize Many-to-Many Relationship
         builder.Entity<Car>()
-            .HasMany(b => b.Brands)
+            .HasOne(b => b.Brand)
             .WithMany(c => c.Cars)
             .UsingEntity<BrandCar>();
         #endregion
