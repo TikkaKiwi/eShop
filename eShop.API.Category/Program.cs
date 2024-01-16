@@ -1,6 +1,3 @@
-using eShop.API.DTO.DTOs;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,7 +10,6 @@ builder.Services.AddDbContext<EShopContext>(
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("EShopConnection")));
 
-
 /**********
  ** CORS Cross-Origin Resource Sharing**
  **********/
@@ -25,7 +21,7 @@ builder.Services.AddCors(policy =>
            .AllowAnyMethod());
 });
 
-
+RegisterServices();
 
 var app = builder.Build();
 
@@ -52,4 +48,23 @@ app.Run();
 void RegisterEndpoints()
 {
     app.AddEndPoint<Category, CategoryPostDTO, CategoryPutDTO, CategoryGetDTO>();
+}
+
+void RegisterServices()
+{
+    ConfigureAutoMapper();
+    builder.Services.AddScoped<IDbService, CategoryDbService>();
+}
+
+void ConfigureAutoMapper()
+{
+    var config = new MapperConfiguration(cfg =>
+    {
+        cfg.CreateMap<Category, CategoryPostDTO>().ReverseMap();
+        cfg.CreateMap<Category, CategoryGetDTO>().ReverseMap();
+        cfg.CreateMap<Category, CategoryPutDTO>().ReverseMap();
+        cfg.CreateMap<Category, CategorySmallDTO>().ReverseMap();
+    });
+    var mapper = config.CreateMapper();
+    builder.Services.AddSingleton(mapper);
 }
