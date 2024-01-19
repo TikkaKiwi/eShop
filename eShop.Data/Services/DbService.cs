@@ -15,6 +15,12 @@ public class DbService : IDbService
         _db = db;
         _mapper = mapper;
     }
+    public virtual async Task<TDto> SingleAsync<TEntity, TDto>(int id) 
+        where TEntity : class, IEntity where TDto : class
+    {
+        var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
+        return _mapper.Map<TDto>(entity);
+    }
 
     public virtual async Task<List<TDto>> GetAsync<TEntity, TDto>()
         where TEntity : class

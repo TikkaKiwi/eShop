@@ -7,12 +7,22 @@ public static class HttpExtensions
     {
         var node = typeof(TEntity).Name.ToLower();
         
-        //app.MapGet($"/api/{node}s/" + "{id}", HttpSingleAsync<TEntity, TGetDto>);
+        app.MapGet($"/api/{node}s/" + "{id}", HttpSingleAsync<TEntity, TGetDto>);
         app.MapGet($"/api/{node}s", HttpGetAsync<TEntity, TGetDto>);
         //app.MapPost($"/api/{node}s", HttpPostAsync<TEntity, TPostDto>);
         //app.MapPut($"/api/{node}s/" + "{id}", HttpPutAsync<TEntity, TPutDto>);
         //app.MapDelete($"/api/{node}s/" + "{id}", HttpDeleteAsync<TEntity>);
         
+    }
+
+    public static async Task<IResult> HttpSingleAsync<TEntity, TDto>(this IDbService db, int id)
+        where TEntity : class, IEntity where TDto : class
+    {
+        var result = await db.SingleAsync<TEntity, TDto>(id);
+        if (result is null) 
+            return Results.NotFound();
+
+        return Results.Ok(result);
     }
 
     public static async Task<IResult> HttpGetAsync<TEntity, TDto>(this IDbService db) 
