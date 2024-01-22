@@ -15,7 +15,7 @@ public class DbService : IDbService
         _db = db;
         _mapper = mapper;
     }
-    public virtual async Task<TDto> SingleAsync<TEntity, TDto>(int id) 
+    public virtual async Task<TDto> SingleAsync<TEntity, TDto>(int id)
         where TEntity : class, IEntity where TDto : class
     {
         var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
@@ -29,4 +29,15 @@ public class DbService : IDbService
         var enteties = await _db.Set<TEntity>().ToListAsync();
         return _mapper.Map<List<TDto>>(enteties);
     }
+
+    public async Task<TEntity> AddSync<TEntity, TDto>(TDto dto)
+        where TEntity : class
+        where TDto : class
+    {
+        var entity = _mapper.Map<TEntity>(dto);
+        await _db.Set<TEntity>().AddAsync(entity);
+        return entity;
+    }
+
+    public async Task<bool> SaveChangesAsync() => await _db.SaveChangesAsync() >= 0;
 }
