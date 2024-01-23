@@ -12,9 +12,8 @@ public static class HttpExtensions
         app.MapGet($"/api/{node}s/" + "{id}", HttpSingleAsync<TEntity, TGetDto>);
         app.MapGet($"/api/{node}s", HttpGetAsync<TEntity, TGetDto>);
         app.MapPost($"/api/{node}s", HttpPostAsync<TEntity, TPostDto>);
-        //app.MapPut($"/api/{node}s/" + "{id}", HttpPutAsync<TEntity, TPutDto>);
-        //app.MapDelete($"/api/{node}s/" + "{id}", HttpDeleteAsync<TEntity>);
-        
+        app.MapPut($"/api/{node}s/" + "{id}", HttpPutAsync<TEntity, TPutDto>);
+        app.MapDelete($"/api/{node}s/" + "{id}", HttpDeleteAsync<TEntity>);
     }
 
     public static async Task<IResult> HttpSingleAsync<TEntity, TDto>(this IDbService db, int id)
@@ -46,5 +45,38 @@ public static class HttpExtensions
         }
         catch { }
         return Results.BadRequest($"Couldn't add the {typeof(TEntity)}");
+    }
+
+    public static async Task<IResult> HttpPutAsync<TEntity, TPutDto>(this IDbService db, TPutDto dto)
+        where TEntity : class, IEntity where TPutDto : class
+    {
+        try
+        {
+            db.Update<TEntity, TPutDto>(dto);
+            if (await db.SaveChangesAsync()) return Results.NoContent();
+        }
+        catch
+        {
+        }
+
+        return Results.BadRequest($"Couldn't update the {typeof(TEntity).Name}");
+    }
+
+    public static async Task<IResult> HttpDeleteAsync<TEntity>(this IDbService db, int id)
+        where TEntity : class, IEntity
+    {
+        try
+        {
+            if (!await db.DeleteAsync<TEntity>(id))
+                return Results.NotFound();
+
+            if (await db.SaveChangesAsync())
+                return Results.NoContent();
+        }
+        catch
+        {
+        }
+
+        return Results.BadRequest($"Couldn't delete the {typeof(TEntity).Name}");
     }
 }
