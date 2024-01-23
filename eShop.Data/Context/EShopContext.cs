@@ -1,7 +1,4 @@
-﻿using eShop.Data.Enteties;
-using Microsoft.EntityFrameworkCore;
-
-namespace eShop.Data.Context;
+﻿namespace eShop.Data.Context;
 
 public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(builder)
 {
@@ -73,8 +70,5 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .WithMany(c => c.Cars)
             .UsingEntity<ModelCar>();
         #endregion
-
-
-
     }
 }

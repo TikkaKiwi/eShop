@@ -1,9 +1,4 @@
-﻿
-using AutoMapper;
-using eShop.Data.Context;
-using Microsoft.EntityFrameworkCore;
-
-namespace eShop.Data.Services;
+﻿namespace eShop.Data.Services;
 
 public class DbService : IDbService
 {
