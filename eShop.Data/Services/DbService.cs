@@ -1,4 +1,7 @@
-﻿namespace eShop.Data.Services;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+
+namespace eShop.Data.Services;
 
 public class DbService : IDbService
 {
@@ -25,7 +28,7 @@ public class DbService : IDbService
         return _mapper.Map<List<TDto>>(enteties);
     }
 
-    public async Task<TEntity> AddSync<TEntity, TDto>(TDto dto)
+    public async Task<TEntity> AddAsync<TEntity, TDto>(TDto dto)
         where TEntity : class where TDto : class
     {
         var entity = _mapper.Map<TEntity>(dto);
@@ -55,6 +58,19 @@ public class DbService : IDbService
             if (entity is null)
                 return false;
 
+            _db.Remove(entity);
+        }
+        catch { return false; }
+
+        return true;
+    }
+
+    public bool Delete<TEntity, TDto>(TDto dto) where TEntity : class where TDto : class
+    {
+        try
+        {
+            var entity = _mapper.Map<TEntity>(dto);
+            if (entity is null) return false;
             _db.Remove(entity);
         }
         catch { return false; }

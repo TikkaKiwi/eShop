@@ -10,7 +10,7 @@ public interface IDbService
         where TEntity : class, IEntity
         where TDto : class;
 
-    Task<TEntity> AddSync<TEntity, TDto>(TDto tdto)
+    Task<TEntity> AddAsync<TEntity, TDto>(TDto dto)
         where TEntity : class
         where TDto : class;
 
@@ -21,5 +21,8 @@ public interface IDbService
     Task<bool> DeleteAsync<TEntity>(int id)
         where TEntity : class, IEntity;
 
+    bool Delete<TEntity, TDto>(TDto dto)
+        where TEntity : class
+        where TDto : class;
     Task<bool> SaveChangesAsync();
 }
