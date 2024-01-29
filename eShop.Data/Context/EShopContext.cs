@@ -36,7 +36,7 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .UsingEntity<FilterCategory>();
         #endregion
 
-        #region ProductCategory Many-to-Many Relationship
+        #region CarCetegories Many-to-Many Relationship
         builder.Entity<Car>()
             .HasMany(c => c.Categories)
             .WithMany(c => c.Cars)
@@ -50,25 +50,41 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .HasForeignKey(b => b.BrandId);
         #endregion
 
-        #region ProductColor Many-to-Many Relationship
+        #region CarColour Many-to-Many Relationship
         builder.Entity<Car>()
             .HasMany(c => c.Colours)
             .WithMany(c => c.Cars)
             .UsingEntity<ColourCar>();
         #endregion
 
-        #region ProductColor Many-to-Many Relationship
+        #region CarFuel Many-to-Many Relationship
         builder.Entity<Car>()
             .HasMany(f => f.Fuels)
             .WithMany(c => c.Cars)
             .UsingEntity<FuelCar>();
         #endregion
 
-        #region ProductColor Many-to-Many Relationship
+        #region CarModel Many-to-Many Relationship
         builder.Entity<Car>()
             .HasMany(m => m.Models)
             .WithMany(c => c.Cars)
             .UsingEntity<ModelCar>();
+        #endregion
+
+        #region Filter-Options One-to-Many Relationship
+        /*
+        builder.Entity<Filter>()
+            .HasMany(o => o.Options)
+            .WithOne(f => f.Filter);
+        */
+        #endregion
+
+        #region FilterOptions One-to-One Relationsship
+        /*
+        builder.Entity<FilterOption>()
+            .HasMany(z => z.Filters)
+            .WithOne(f => f.FilterOption);
+        */
         #endregion
     }
 }
