@@ -56,9 +56,14 @@ namespace eShop.Data.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Owner")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PictureUrl");
 
                     b.Property<int>("Year")
                         .HasColumnType("int");
