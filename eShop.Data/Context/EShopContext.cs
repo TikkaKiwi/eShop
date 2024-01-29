@@ -11,7 +11,6 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
     public DbSet<Fuel> Fuels => Set<Fuel>();
 
     public DbSet<CarCategory> CarCategories => Set<CarCategory>();
-    public DbSet<ModelCar> ModelCars => Set<ModelCar>();
     public DbSet<ColourCar> ColourCar => Set<ColourCar>();
     public DbSet<FuelCar> FuelCars => Set<FuelCar>();
 
@@ -43,7 +42,7 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .UsingEntity<CarCategory>();
         #endregion
 
-        #region ProductBrand One-to-Many Relationship
+        #region CarBrand One-to-Many Relationship
         builder.Entity<Car>()
             .HasOne(b => b.Brand)
             .WithMany(c => c.Cars)
@@ -66,9 +65,9 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
 
         #region CarModel Many-to-Many Relationship
         builder.Entity<Car>()
-            .HasMany(m => m.Models)
+            .HasOne(m => m.Model)
             .WithMany(c => c.Cars)
-            .UsingEntity<ModelCar>();
+            .HasForeignKey(b => b.ModelId);
         #endregion
 
         #region Filter-Options One-to-Many Relationship
