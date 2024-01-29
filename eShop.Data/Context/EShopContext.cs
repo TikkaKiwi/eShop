@@ -12,7 +12,6 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
 
     public DbSet<CarCategory> CarCategories => Set<CarCategory>();
     public DbSet<ColourCar> ColourCar => Set<ColourCar>();
-    public DbSet<FuelCar> FuelCars => Set<FuelCar>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -56,11 +55,11 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .UsingEntity<ColourCar>();
         #endregion
 
-        #region CarFuel Many-to-Many Relationship
+        #region CarFuel one-to-Many Relationship
         builder.Entity<Car>()
-            .HasMany(f => f.Fuels)
-            .WithMany(c => c.Cars)
-            .UsingEntity<FuelCar>();
+            .HasOne(c => c.Fuel)
+            .WithMany(f => f.Cars)
+            .HasForeignKey(i => i.FuelId);
         #endregion
 
         #region CarModel Many-to-Many Relationship

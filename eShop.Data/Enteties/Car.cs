@@ -14,7 +14,8 @@ public class Car : IEntity
     public int BrandId { get; set; }
     public Brand? Brand { get; set; }
 
-    public List<Fuel>? Fuels { get; set; }
+    public int FuelId { get; set; }
+    public Fuel? Fuel { get; set; }
 
     public int ModelId { get; set; }
     public Model? Model { get; set; }
