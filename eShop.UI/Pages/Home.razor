@@ -1,0 +1,154 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<section class="bg-light py-5">
+
+    <div class="container bg-white shadow-lg p-5">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+            <img src="Images/logo.png" alt="logo" class="rounded-circle" width="100px"/>
+            <h1 class="h3 font-weight-bold">Cars eShop</h1>
+            </div>
+            <div class="text-secondary">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+            </div>
+        </header>
+
+        <nav class="mb-3">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link category">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link category">Shop</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="col-md-3">
+                <div class="mb-4">
+                    <h2 class="h5 font-weight-semibold">Category</h2>
+                    <ul class="list-unstyled">
+                        <li class="category mb-1"><i class="fas fa-angle-right"></i>Sedan</li>
+                        <li class="category mb-1"><i class="fas fa-angle-right"></i>SUV</li>
+                        <li class="category mb-1"><i class="fas fa-angle-right"></i>Sport car</li>
+                        <li class="category mb-1"><i class="fas fa-angle-right"></i>Family car</li>
+                    </ul>
+                </div>
+                <div class="mb-4">
+                    <h2 class="h5 font-weight-semibold">Price</h2>
+                    <input type="range" class="custom-range" id="customRange1">
+                </div>
+                <div class="mb-4">
+                    <h2 class="h5 font-weight-semibold">Brand</h2>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="brand1">
+                        <label class="form-check-label" for="brand1">
+                            Volvo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="brand2">
+                        <label class="form-check-label" for="brand2">
+                            BMW
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="brand3">
+                        <label class="form-check-label" for="brand3">
+                            Audi
+                        </label>
+                    </div>
+                    <!-- Repeat for each brand -->
+                </div>
+                <div class="mb-4">
+                    <h2 class="h5 font-weight-semibold">Fuel</h2>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sizeOptions" id="fuel1" value="option1" checked>
+                        <label class="form-check-label" for="fuel1">
+                            Gasoline
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sizeOptions" id="fuel2" value="option1" checked>
+                        <label class="form-check-label" for="fuel2">
+                            Diesel
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sizeOptions" id="fuel3" value="option1" checked>
+                        <label class="form-check-label" for="fuel3">
+                            Hybrid
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="sizeOptions" id="fuel4" value="option1" checked>
+                        <label class="form-check-label" for="fuel4">
+                            Electric
+                        </label>
+                    </div>
+                    <!-- Repeat for each size -->
+                </div>
+                <div class="mb-4">
+                    <h2 class="h5 font-weight-semibold">Colour</h2>
+                    <div class="color-indicator d-flex">
+                        <span class="dot bg-black" style="height: 20px; width: 20px;"></span>
+                        <span class="dot bg-red" style="height: 20px; width: 20px;"></span>
+                        <span class="dot bg-blue" style="height: 20px; width: 20px;"></span>
+                        <span class="dot bg-green" style="height: 20px; width: 20px;"></span>
+                        <!-- Define additional colors with different classes and repeat the span for each color -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main content -->
+            <main class="col-md-9">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <span>Showing 1-12 of 158 products</span>
+                    </div>
+                    <div>
+                        <select class="custom-select custom-select-sm">
+                            <option selected>Sort by DEFAULT</option>
+                            <!-- Repeat for each sort option -->
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Product card -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="Images/car1.png" alt="Placeholder image for a White Tee" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">BMW X3</h5>
+                                <p class="card-text">$65000.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="Images/car2.png" alt="Placeholder image for a White Tee" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">Volvo XC60</h5>
+                                <p class="card-text">$55000.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="Images/car3.png" alt="Placeholder image for a White Tee" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">Volvo XC40</h5>
+                                <p class="card-text">$45000.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat for each product card -->
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
