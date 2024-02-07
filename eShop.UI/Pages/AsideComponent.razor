@@ -1,0 +1,80 @@
+﻿<!-- Sidebar -->
+<aside class="col-md-3">
+    <div class="mb-4">
+        <h2 class="h5 font-weight-semibold">Category</h2>
+        <ul class="list-unstyled">
+            <li class="category mb-1"><i class="fas fa-angle-right"></i>Sedan</li>
+            <li class="category mb-1"><i class="fas fa-angle-right"></i>SUV</li>
+            <li class="category mb-1"><i class="fas fa-angle-right"></i>Sport car</li>
+            <li class="category mb-1"><i class="fas fa-angle-right"></i>Family car</li>
+        </ul>
+    </div>
+    <div class="mb-4">
+        <h2 class="h5 font-weight-semibold">Price</h2>
+        <input type="range" class="custom-range" id="customRange1">
+    </div>
+    <div class="mb-4">
+        <h2 class="h5 font-weight-semibold">Brand</h2>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="brand1">
+            <label class="form-check-label" for="brand1">
+                Volvo
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="brand2">
+            <label class="form-check-label" for="brand2">
+                BMW
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="brand3">
+            <label class="form-check-label" for="brand3">
+                Audi
+            </label>
+        </div>
+        <!-- Repeat for each brand -->
+    </div>
+    <div class="mb-4">
+        <h2 class="h5 font-weight-semibold">Fuel</h2>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sizeOptions" id="fuel1" value="option1" checked>
+            <label class="form-check-label" for="fuel1">
+                Gasoline
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sizeOptions" id="fuel2" value="option1" checked>
+            <label class="form-check-label" for="fuel2">
+                Diesel
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sizeOptions" id="fuel3" value="option1" checked>
+            <label class="form-check-label" for="fuel3">
+                Hybrid
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="sizeOptions" id="fuel4" value="option1" checked>
+            <label class="form-check-label" for="fuel4">
+                Electric
+            </label>
+        </div>
+        <!-- Repeat for each size -->
+    </div>
+    <div class="mb-4">
+        <h2 class="h5 font-weight-semibold">Colour</h2>
+        <div class="color-indicator d-flex">
+            <span class="dot bg-black" style="height: 20px; width: 20px;"></span>
+            <span class="dot bg-red" style="height: 20px; width: 20px;"></span>
+            <span class="dot bg-blue" style="height: 20px; width: 20px;"></span>
+            <span class="dot bg-green" style="height: 20px; width: 20px;"></span>
+            <!-- Define additional colors with different classes and repeat the span for each color -->
+        </div>
+    </div>
+</aside>
+
+@code {
+
+}
