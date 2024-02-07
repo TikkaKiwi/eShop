@@ -1,3 +1,4 @@
+using eShop.UI.Models.Link;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -5,6 +6,7 @@ namespace eShop.UI
 {
     public class Program
     {
+
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);

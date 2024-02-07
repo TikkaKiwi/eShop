@@ -1,14 +1,9 @@
 ﻿<!-- Sidebar -->
 <aside class="col-md-3">
-    <div class="mb-4">
-        <h2 class="h5 font-weight-semibold">Category</h2>
-        <ul class="list-unstyled">
-            <li class="category mb-1"><i class="fas fa-angle-right"></i>Sedan</li>
-            <li class="category mb-1"><i class="fas fa-angle-right"></i>SUV</li>
-            <li class="category mb-1"><i class="fas fa-angle-right"></i>Sport car</li>
-            <li class="category mb-1"><i class="fas fa-angle-right"></i>Family car</li>
-        </ul>
-    </div>
+    @foreach(var group in CategoryLinkGroups)
+    {
+        <LinkMainComponent LinkGroup="group"/>
+    }
     <div class="mb-4">
         <h2 class="h5 font-weight-semibold">Price</h2>
         <input type="range" class="custom-range" id="customRange1">
@@ -77,4 +72,20 @@
 
 @code {
 
+
+    public List<LinkGroup> CategoryLinkGroups { get; set; } = new List<LinkGroup>
+    {
+        new LinkGroup
+        {
+            Name = "Category",
+            LinkOptions = new()
+            {
+                new LinkOption {Id = 1, Name = "Sedan", IsSelected = false },
+                new LinkOption {Id = 2, Name = "SUV", IsSelected = false },
+                new LinkOption {Id = 3, Name = "Sport car", IsSelected = false },
+                new LinkOption {Id = 4, Name = "Family car", IsSelected = false },
+                new LinkOption {Id = 5, Name = "Test category", IsSelected = false }
+            }
+        }
+    };
 }

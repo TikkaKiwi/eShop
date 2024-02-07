@@ -1,0 +1,15 @@
+﻿@using eShop.UI.Models.Link
+
+<div class="mb-4">
+    <h2 class="h5 font-weight-semibold">Category</h2>
+    <ul class="list-unstyled">
+        @foreach (var link in LinkGroup!.LinkOptions)
+        {
+            <LinkComponent LinkOption="link"/>
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter] public LinkGroup? LinkGroup { get; set; }
+}

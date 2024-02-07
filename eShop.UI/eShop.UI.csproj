@@ -11,4 +11,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\eShop.UI.Models\eShop.UI.Models.csproj" />
+    <ProjectReference Include="..\eShop.UI.Razor\eShop.UI.Razor.csproj" />
+  </ItemGroup>
+
 </Project>
