@@ -2,13 +2,17 @@
 
 <PageTitle>Home</PageTitle>
 
-<section class="bg-light py-5">
+<!-- Logo and cart -->
+<HeaderComponent />
+<section class="bg-light py-4">
 
-    <div class="container bg-white shadow-lg p-5">
-        <HeaderComponent/>
-
-        <div class="row">
+    <div class="bg-white shadow-lg p-5 mx-5 d-flex v-100">
+        <div class="flex-shrink-1 me-4">
+            <!-- Category and filters content -->
             <AsideComponent/>
+        </div>
+        <!-- Main content -->
+        <div class="flex-wrap w-100 pt-3">
             <ProductComponent/>
         </div>
     </div>
