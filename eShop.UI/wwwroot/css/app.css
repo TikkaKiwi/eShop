@@ -78,6 +78,7 @@ code {
 body {
     font-family: 'Open Sans', sans-serif;
 }
+
 .cart-count {
     top: 0;
     right: 0;
@@ -86,4 +87,21 @@ body {
     margin-top: -10px;
     margin-right: -8px;
     font-size: 9pt;
+}
+
+h2 {
+    color: #0d3344;
+    font-weight: bold;
+}
+
+h6 {
+    color: #0d3344;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 470px) {
+    #aside-menu, #viewport {
+        height: auto !important;
+        flex-direction: column;
+    }
 }
