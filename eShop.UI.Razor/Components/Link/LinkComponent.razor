@@ -1,22 +1,23 @@
-﻿@using eShop.UI.Models.Link
-
-<div class="button-container">
-    <button class="category mb-1" style="background: none; border: none; padding: 0; cursor: pointer;" @onclick="OnClick">
-        @if(LinkOption.IsSelected)
-        {
-            <i class="fas fa-angle-right"></i>
-        }
-        @LinkOption?.Name
-    </button>
-</div>
+﻿@if (LinkOption is not null)
+{
+    <div class="button-container">
+        <button class="category mb-1" style="background: none; border: none; padding: 0; cursor: pointer;" @onclick="OnClick">
+            @if(LinkOption.IsSelected)
+            {
+                <i class="fas fa-angle-right"></i>
+            }
+            @LinkOption?.Name
+        </button>
+    </div>
+}
 
 @code {
     [Parameter] public LinkOption? LinkOption { get; set; }
     [Parameter] public EventCallback<int> OnLinkClick { get; set; }
 
-    private void OnClick()
+    void OnClick()
     {
-        if (OnLinkClick.HasDelegate)
+        if (OnLinkClick.HasDelegate && LinkOption is not null)
             OnLinkClick.InvokeAsync(LinkOption.Id);
     }
 }

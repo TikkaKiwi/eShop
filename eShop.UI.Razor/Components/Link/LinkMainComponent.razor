@@ -1,15 +1,23 @@
-﻿@using eShop.UI.Models.Link
-
-<div class="ps-3">
-    <h6 class="font-weight-semibold">Category</h6>
-    <ul class="list-unstyled">
-        @foreach (var link in LinkGroup!.LinkOptions)
-        {
-            <LinkComponent LinkOption="link"/>
-        }
-    </ul>
-</div>
+﻿@if (LinkGroup is not null)
+{
+    <div class="ps-3">
+        <h6 class="font-weight-semibold">Category</h6>
+        <ul class="list-unstyled">
+            @foreach (var link in LinkGroup!.LinkOptions)
+            {
+                <LinkComponent LinkOption="link" OnLinkClick="OnClick" />
+            }
+        </ul>
+    </div>
+}
 
 @code {
     [Parameter] public LinkGroup? LinkGroup { get; set; }
+    [Parameter] public EventCallback<int> OnLinkClick { get; set; }
+
+    void OnClick(int id)
+    {
+        if (OnLinkClick.HasDelegate)
+            OnLinkClick.InvokeAsync(id);
+    }
 }
