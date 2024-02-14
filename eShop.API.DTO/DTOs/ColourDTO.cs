@@ -1,6 +1,4 @@
-﻿using eShop.Data.Shared.Enums;
-
-namespace eShop.API.DTO.DTOs;
+﻿namespace eShop.API.DTO.DTOs;
 
 public class ColourPostDTO
 {

@@ -1,6 +1,4 @@
-﻿using eShop.Data.Enteties;
-
-namespace eShop.API.DTO.DTOs;
+﻿namespace eShop.API.DTO.DTOs;
 
 public class CarPostDTO
 {
