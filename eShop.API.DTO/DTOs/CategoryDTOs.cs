@@ -12,6 +12,7 @@ public class CategoryGetDTO : CategoryPutDTO
 {
     //public List<FilterGetDTO>? Filters { get; set; }
 }
+
 public class CategorySmallDTO : CategoryPutDTO 
 {
 }

@@ -1,21 +1,28 @@
-using eShop.UI.Models.Link;
+using eShop.API.DTO.DTOs;
+using eShop.UI;
+using eShop.UI.Http.Clients;
+using eShop.UI.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace eShop.UI
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddSingleton<UIService>();
+builder.Services.AddHttpClient<CategoryHttpClient>();
+builder.Services.AddHttpClient<ProductHttpClient>();
+ConfigureAutoMapper();
+
+await builder.Build().RunAsync();
+
+void ConfigureAutoMapper()
 {
-    public class Program
+    var config = new MapperConfiguration(cfg =>
     {
-
-        public static async Task Main(string[] args)
-        {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
-            builder.RootComponents.Add<HeadOutlet>("head::after");
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-            await builder.Build().RunAsync();
-        }
-    }
+        cfg.CreateMap<CategoryGetDTO, LinkOption>().ReverseMap();
+    });
+    var mapper = config.CreateMapper();
+    builder.Services.AddSingleton(mapper);
 }

@@ -1,8 +1,8 @@
 ﻿<!-- Sidebar -->
 ﻿﻿<aside id="aside-menu" class="d-flex flex-column m-2 ms-0 mt-0 p-2 pt-0 bg-body-tertiary vh-100" style="min-width: 160px; max-width: 200px;">
-    @foreach (var group in CategoryLinkGroups)
+    @foreach (var group in Service!.CaregoryLinkGroups)
     {
-        <LinkMainComponent LinkGroup="group"/>
+        <LinkMainComponent LinkGroup="group" OnAsideCall="OnAsideCallback" />
     }
     <span class="border-bottom"></span>
     <div class="p-3">
@@ -129,7 +129,29 @@
 </aside>
 
 @code {
-    public List<LinkGroup> CategoryLinkGroups { get; set; } = new List<LinkGroup>
+    [CascadingParameter(Name = "Service")] public UIService? Service { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    async Task OnAsideCallback(int id)
+    {
+        if (OnChange.HasDelegate && Service is not null)
+        {
+            await Service.OnCategoryLinkClick(id);
+            await OnChange.InvokeAsync();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Service is not null)
+        {
+            await Service.GetLinkGroup();
+            await OnChange.InvokeAsync();
+        }
+    }
+
+
+    /*public List<LinkGroup> CategoryLinkGroups { get; set; } = new List<LinkGroup>
     {
         new LinkGroup
         {
@@ -143,5 +165,5 @@
                 new LinkOption {Id = 5, Name = "Test category", IsSelected = false }
             }
         }
-    };
+    };*/
 }
