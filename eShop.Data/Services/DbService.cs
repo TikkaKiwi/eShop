@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace eShop.Data.Services;
 
@@ -26,6 +27,13 @@ public class DbService : IDbService
     {
         var enteties = await _db.Set<TEntity>().ToListAsync();
         return _mapper.Map<List<TDto>>(enteties);
+    }
+
+    public IQueryable<TEntity> GetAsync<TEntity>(
+    Expression<Func<TEntity, bool>> expression)
+    where TEntity : class
+    {
+        return _db.Set<TEntity>().Where(expression);
     }
 
     public async Task<TEntity> AddAsync<TEntity, TDto>(TDto dto)
@@ -76,5 +84,19 @@ public class DbService : IDbService
         catch { return false; }
 
         return true;
+    }
+
+    public void IncludeNavigationsFor<TEntity>() where TEntity : class
+    {
+        var propertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetNavigations().Select(e => e.Name);
+        var navigationPropertyNames = _db.Model.FindEntityType(typeof(TEntity))?.GetSkipNavigations().Select(e => e.Name);
+
+        if (propertyNames is not null)
+            foreach (var name in propertyNames)
+                _db.Set<TEntity>().Include(name).Load();
+
+        if (navigationPropertyNames is not null)
+            foreach (var name in navigationPropertyNames)
+                _db.Set<TEntity>().Include(name).Load();
     }
 }

@@ -5,10 +5,10 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Filter> Filters => Set<Filter>();
     public DbSet<Car> Cars => Set<Car>();
-    public DbSet<Brand> Brands => Set<Brand>();
+    //public DbSet<Brand> Brands => Set<Brand>();
     public DbSet<Colour> Colours => Set<Colour>();
-    public DbSet<Model> Models => Set<Model>();
-    public DbSet<Fuel> Fuels => Set<Fuel>();
+    //public DbSet<Model> Models => Set<Model>();
+    //public DbSet<Fuel> Fuels => Set<Fuel>();
 
     public DbSet<CarCategory> CarCategories => Set<CarCategory>();
     public DbSet<ColourCar> ColourCar => Set<ColourCar>();
@@ -41,12 +41,14 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .UsingEntity<CarCategory>();
         #endregion
 
+        /*
         #region CarBrand One-to-Many Relationship
         builder.Entity<Car>()
             .HasOne(b => b.Brand)
             .WithMany(c => c.Cars)
             .HasForeignKey(b => b.BrandId);
         #endregion
+        */
 
         #region CarColour Many-to-Many Relationship
         builder.Entity<Car>()
@@ -54,7 +56,7 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .WithMany(c => c.Cars)
             .UsingEntity<ColourCar>();
         #endregion
-
+        /*
         #region CarFuel one-to-Many Relationship
         builder.Entity<Car>()
             .HasOne(c => c.Fuel)
@@ -68,7 +70,7 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .WithMany(c => c.Cars)
             .HasForeignKey(b => b.ModelId);
         #endregion
-
+        */
         #region Filter-Options One-to-Many Relationship
         /*
         builder.Entity<Filter>()

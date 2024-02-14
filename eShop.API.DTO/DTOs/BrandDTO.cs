@@ -3,7 +3,6 @@
 public class BrandPostDTO
 {
     public string BrandName { get; set; } = string.Empty;
-    public OptionType? OptionType { get; set; }
     public bool IsSelected { get; set; }
 }
 
