@@ -6,16 +6,14 @@
 <!-- Logo and cart -->
 <HeaderComponent />
 <section id="viewport" class="py-2 vh-100">
-    <div class="shadow-lg p-5 mx-5 d-flex v-100">
+    <div class="shadow-lg p-3 mx-5 d-flex">
         <CascadingValue Value="Service" Name="Service">
             <!-- Sidebar -->
             <div class="flex-shrink-1 me-4">
                 <AsideComponent OnChange="OnChange" />
             </div>
             <!-- Main content -->
-            <div class="flex-wrap w-100 pt-3">
                 <ProductMainComponent OnChange="OnChange" />
-            </div>
         </CascadingValue>
     </div>
 </section>

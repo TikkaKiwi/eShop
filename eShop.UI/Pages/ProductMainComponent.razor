@@ -1,22 +1,22 @@
-﻿<div class="d-flex justify-content-between mb-3">
-    <div>
-        <span>Showing 1-8 of 40 products</span>
+﻿<main>
+    <div class="d-flex mb-3">
+        @*Write out how many cars are being shown on the page*@
+        <span>Showing @Service?.Products.Count cars</span>
     </div>
-</div>
 
-<main class="d-flex flex-wrap p-3 pt-2 align-items-start">
-    <div class="row">
+    <div class="row d-flex flex-wrap">
         @foreach (var product in Service!.Products)
         {
-            <div class="col-md-3 mb-3" style="min-width: 18rem;">
-                <div class="card h-70">
-                    <img src="@product.PictureUrl" alt="Placeholder image for a car" class="card-img-top">
+
+            <div class="card col-md-3 m-3" style="width: 20rem;">
+                <img src="@product.PictureUrl" alt="Placeholder image for a car" class="pt-3 card-img-top">
                     <div class="card-body">
-                        <h6 class="card-title">@product.Name</h6>
+                        <h5 class="card-title">@product.Name</h5>
+                        <h6>@product.Year</h6>
                         <p class="card-text">@product.Description.Truncate(50)</p>
                     </div>
                 </div>
-            </div>
+            
         }
     </div>
 </main>

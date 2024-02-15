@@ -1,7 +1,7 @@
 ﻿@if (LinkGroup is not null)
 {
     <div class="ps-3">
-        <h6 class="font-weight-semibold">Category</h6>
+        <h6 class="font-weight-semibold">@LinkGroup?.Name</h6>
         <ul class="list-unstyled">
             @foreach (var link in LinkGroup!.LinkOptions)
             {
@@ -9,6 +9,7 @@
             }
         </ul>
     </div>
+    <span class="border-bottom"></span>
 }
 
 @code {
