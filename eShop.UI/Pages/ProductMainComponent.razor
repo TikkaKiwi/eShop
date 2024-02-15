@@ -1,0 +1,39 @@
+﻿<div class="d-flex justify-content-between mb-3">
+    <div>
+        <span>Showing 1-8 of 40 products</span>
+    </div>
+</div>
+
+<main class="d-flex flex-wrap p-3 pt-2 align-items-start">
+    <div class="row">
+        @foreach (var product in Service!.Products)
+        {
+            <div class="col-md-3 mb-3" style="min-width: 18rem;">
+                <div class="card h-70">
+                    <img src="@product.PictureUrl" alt="Placeholder image for a car" class="card-img-top">
+                    <div class="card-body">
+                        <h6 class="card-title">@product.Name</h6>
+                        <p class="card-text">@product.Description.Truncate(50)</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</main>
+
+
+
+@code {
+    [CascadingParameter(Name = "Service")] public UIService? Service { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    // Set the category to 1 when loading page for first time
+    protected override async Task OnInitializedAsync()
+    {
+        if (Service is not null)
+        {
+            Service.CurrentCategoryId = 1;
+            await Service.GetProductsAsync();
+        }
+    }
+}

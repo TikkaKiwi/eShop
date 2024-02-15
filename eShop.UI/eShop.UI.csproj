@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\eShop.UI.Http\eShop.UI.Http.csproj" />
     <ProjectReference Include="..\eShop.UI.Models\eShop.UI.Models.csproj" />
-    <ProjectReference Include="..\eShop.UI.Razor\eShop.UI.Razor.csproj" />
   </ItemGroup>
 
 </Project>

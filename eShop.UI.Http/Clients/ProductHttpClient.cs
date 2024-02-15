@@ -6,7 +6,7 @@ namespace eShop.UI.Http.Clients;
 public class ProductHttpClient
 {
     private readonly HttpClient _httpClient;
-    string _baseAddress = "https://localhost:7031/api/";
+    string _baseAddress = "https://localhost:5500/api/";
 
     public ProductHttpClient(HttpClient httpClient)
     {

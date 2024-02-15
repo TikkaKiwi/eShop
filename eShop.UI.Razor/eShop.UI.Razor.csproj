@@ -19,4 +19,8 @@
     <ProjectReference Include="..\eShop.UI.Models\eShop.UI.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Link\" />
+  </ItemGroup>
+
 </Project>
