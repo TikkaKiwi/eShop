@@ -1,4 +1,5 @@
-﻿<main>
+﻿@using eShop.API.DTO.DTOs
+<main>
     <div class="d-flex mb-3">
         @*Write out how many cars are being shown on the page*@
         <span>Showing @Service?.Products.Count cars</span>
@@ -10,13 +11,29 @@
 
             <div class="card col-md-3 m-3" style="width: 20rem;">
                 <img src="@product.PictureUrl" alt="Placeholder image for a car" class="pt-3 card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">@product.Name</h5>
-                        <h6>@product.Year</h6>
-                        <p class="card-text">@product.Description.Truncate(50)</p>
-                    </div>
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <h6>@product.Year</h6>
+                    <p class="card-text">@product.Description.Truncate(50)</p>
                 </div>
-            
+                
+                @*Added card-footer with colour filters and Add to cart button*@
+
+                <div class="d-flex card-footer bg-white g-0 justify-content-start">
+                    <div class="btn-group mx-2" role="group" aria-label="Basic radio toggle button group">
+                        @foreach (var colour in product.Colours!)
+                        {
+                            <input type="radio" class="btn-check" name="color-@product.Id-@colour.Id" id="color-@product.Id-@colour.Id"
+                                   autocomplete="off" @onclick="() => OnColorClick(product, colour)">
+                            <label class="btn btn-sm btn-outline-dark pt-2"
+                                   style="background-color: #@colour.BkColorHex ; color: #@(colour.IsSelected ? colour.ColorHex : colour.BkColorHex)"
+                                   for="color-@product.Id-@colour.Id"><i class="bi-check"></i></label>
+                        }
+                            
+                    </div>
+                    <button class="btn btn-sm btn-success" @onclick="AddToCart"><i class="bi-cart"></i></button>
+                </div>
+            </div>
         }
     </div>
 </main>
@@ -35,5 +52,17 @@
             Service.CurrentCategoryId = 1;
             await Service.GetProductsAsync();
         }
+    }
+
+    // Added Colour filters on products
+    void OnColorClick(CarGetDTO product, ColourGetDTO colour)
+    {
+        product.Colours!.ForEach(c => c.IsSelected = false);
+        colour.IsSelected = true;
+    }
+
+    void AddToCart()
+    {
+
     }
 }

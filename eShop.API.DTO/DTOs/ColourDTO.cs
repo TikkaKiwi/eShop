@@ -1,11 +1,13 @@
-﻿namespace eShop.API.DTO.DTOs;
+﻿using eShop.Data.Shared.Enums;
+
+namespace eShop.API.DTO.DTOs;
 
 public class ColourPostDTO
 {
     public string ColourName { get; set; } = string.Empty;
-    public string ColorHex { get; set; }
-    public string BkColorHex { get; set; }
-    public bool IsSelected { get; set; }
+    public string ColorHex { get; set; } = string.Empty;
+    public string BkColorHex { get; set; } = string.Empty;
+    public OptionType? OptionType { get; set; }
 }
 
 public class ColourPutDTO : ColourPostDTO
@@ -15,5 +17,5 @@ public class ColourPutDTO : ColourPostDTO
 
 public class ColourGetDTO : ColourPutDTO
 {
-
+    public bool IsSelected { get; set; }
 }

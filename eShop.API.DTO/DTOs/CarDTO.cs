@@ -15,6 +15,6 @@ public class CarPutDTO : CarPostDTO
 }
 public class CarGetDTO : CarPutDTO
 {
-
+    public List<ColourGetDTO>? Colours { get; set; }
     //public List<FilterGetDTO> Filter { get; set; }
 }

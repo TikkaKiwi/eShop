@@ -2,7 +2,7 @@
 {
     public class LinkGroup
     {
-        public string Name { get; set; }
-        public List<LinkOption> LinkOptions { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public List<LinkOption> LinkOptions { get; set; } = [];
     }
 }
