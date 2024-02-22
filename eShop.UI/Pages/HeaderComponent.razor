@@ -5,12 +5,13 @@
     </div>
     <div>
         <div class="position-relative me-4">
-            <button id="cart-button" type="button" class="btn btn-outline-secondary rounded-0"><i class="bi bi-cart"></i></button>
+            <button id="cart-button" type="button" data-bs-toggle="modal" data-bs-target="#cart"
+                    class="btn btn-outline-secondary rounded-0"><i class="bi bi-cart"></i></button>
             <div class="cart-count bg-danger text-white rounded-circle position-absolute">3</div>
         </div>
     </div>
 </header>
-
+ <CartComponent />
 @code {
 
 }
