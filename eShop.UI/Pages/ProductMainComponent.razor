@@ -1,4 +1,7 @@
 ﻿@using eShop.API.DTO.DTOs
+@using eShop.UI.Storage.Services
+@inject IStorageService Storage
+
 <main>
     <div class="d-flex mb-3">
         @*Write out how many cars are being shown on the page*@
@@ -31,7 +34,7 @@
                         }
                             
                     </div>
-                    <button class="btn btn-sm btn-success" @onclick="AddToCart"><i class="bi-cart"></i></button>
+                    <button class="btn btn-sm btn-success" @onclick="() => AddToCart(product)"><i class="bi-cart"></i></button>
                 </div>
             </div>
         }
@@ -61,8 +64,15 @@
         colour.IsSelected = true;
     }
 
-    void AddToCart()
+    async Task AddToCart(CarGetDTO product)
     {
+        //TODO: Spara flera produkter till shopping cart
+        //TODO: Visa produkterna i shopping carten
+        //TODO: Ta bort produkt från shopping cart
+        //await Storage.SetAsync("MyKey", product);
+        //var prod = await Storage.GetAsync<ProductGetDTO>("MyKey");
+        //await Storage.RemoveAsync("MyKey");
 
+        //var product = Service!.Products.Single(p => p.Id == id);
     }
 }
