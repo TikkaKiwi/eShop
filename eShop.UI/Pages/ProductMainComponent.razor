@@ -1,6 +1,6 @@
 ﻿@using eShop.API.DTO.DTOs
 @using eShop.UI.Storage.Services
-@inject IStorageService Storage
+@inject IMapper mapper
 
 <main>
     <div class="d-flex mb-3">
@@ -11,7 +11,6 @@
     <div class="row d-flex flex-wrap">
         @foreach (var product in Service!.Products)
         {
-
             <div class="card col-md-3 m-3" style="width: 20rem;">
                 <img src="@product.PictureUrl" alt="Placeholder image for a car" class="pt-3 card-img-top">
                 <div class="card-body">
@@ -32,7 +31,6 @@
                                    style="background-color: #@colour.BkColorHex ; color: #@(colour.IsSelected ? colour.ColorHex : colour.BkColorHex)"
                                    for="color-@product.Id-@colour.Id"><i class="bi-check"></i></label>
                         }
-                            
                     </div>
                     <button class="btn btn-sm btn-success" @onclick="() => AddToCart(product)"><i class="bi-cart"></i></button>
                 </div>
@@ -66,6 +64,12 @@
 
     async Task AddToCart(CarGetDTO product)
     {
+        var cartItem = mapper.Map<CartItemDTO>(product);
+        cartItem.Colour = product.Colours!.FirstOrDefault(c => c.IsSelected);
+        Service!.CartItems.Add(cartItem);
+        await Service!.SaveToStorage("CartItems", Service!.CartItems);
+
+
         //TODO: Spara flera produkter till shopping cart
         //TODO: Visa produkterna i shopping carten
         //TODO: Ta bort produkt från shopping cart

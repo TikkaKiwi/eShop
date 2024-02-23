@@ -6,7 +6,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <CartItemComponent />
+                @if (CartItems is not null)
+                {
+                    @foreach (var item in CartItems)
+                    {
+                        <CartItemComponent OnRemoveItem="OnRemoveItem" CartItem="item" />
+                    }
+                }
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -17,5 +23,12 @@
 </div>
 
 @code {
+    [Parameter] public List<CartItemDTO>? CartItems { get; set; }
+    [Parameter] public EventCallback<CartItemDTO?> OnRemoveCartItem { get; set; }
 
+    void OnRemoveItem(CartItemDTO? cartItem)
+    {
+        if (OnRemoveCartItem.HasDelegate)
+            OnRemoveCartItem.InvokeAsync(cartItem);
+    }
 }

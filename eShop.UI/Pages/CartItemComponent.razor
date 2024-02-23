@@ -1,15 +1,22 @@
 ﻿<div class="d-flex">
-    <img src="Images/car1.png" width="30%;" height="30%" />
+    <img src="@CartItem.PictureUrl" width="30%;" height="30%" />
     <div class="d-flex flex-column ms-3">
         <div class="d-flex flex-column">
-            <h3>Car</h3>
-            <p>Description</p>
+            <h3>@CartItem.Name</h3>
+            <p>@CartItem.Description</p>
             <table class="table mb-0">
                 <tbody>
                 <tr><td class="border-0 p-0">Model</td><td class="border-0 p-0"><div class="ms-2 badge text-bg-light rounded-0 fw-normal">X3</div></td></tr>
                 <tr><td class="border-0 p-0">Brand</td><td class="border-0 p-0"><div class="ms-2 badge text-bg-light rounded-0 fw-normal">BMW</div></td></tr>
                 <tr><td class="border-0 p-0">Fuel</td><td class="border-0 p-0"><div class="ms-2 badge text-bg-light rounded-0 fw-normal">Gasoline</div></td></tr>
-                <tr><td class="border-0 p-0">Color</td><td class="border-0 p-0"><div class="ms-2 badge rounded-1 fw-normal" style="background-color:#000; color:#000">B</div></td></tr>
+                    <tr>
+                        <td class="border-0 p-0">Color</td>
+                        <td class="border-0 p-0">
+                            @*<div class="ms-2 badge rounded-1 fw-normal" style="background-color: #@CartItem.Colour.BkColorHex; color: #@CartItem.Colour.ColorHex">
+                                B
+                            </div>*@
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             @* <div class="d-flex">Size<div class="ms-2 badge text-bg-light rounded-0">M</div></div>
@@ -17,10 +24,17 @@
                 style="background-color:#000; color:#000">B</div></div>
             <div>Price: 123.25</div> *@
         </div>
-        <button class="btn btn-danger btn-sm mt-2">Remove</button>
+        <button class="btn btn-danger btn-sm mt-2" @onclick="RemoveItem">Remove</button>
     </div>
 </div>
 
 @code {
+    [Parameter] public CartItemDTO? CartItem { get; set; }
+    [Parameter] public EventCallback<CartItemDTO?> OnRemoveItem { get; set; }
 
+    void RemoveItem()
+    {
+        if (OnRemoveItem.HasDelegate)
+            OnRemoveItem.InvokeAsync(CartItem);
+    }
 }
