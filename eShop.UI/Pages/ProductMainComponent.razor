@@ -64,8 +64,15 @@
 
     async Task AddToCart(CarGetDTO product)
     {
+
+
         var cartItem = mapper.Map<CartItemDTO>(product);
         cartItem.Colour = product.Colours!.FirstOrDefault(c => c.IsSelected);
+
+        // If no Colour is selected, just choose an avaiailable one
+        if(cartItem.Colour == null)
+            cartItem.Colour = product.Colours!.FirstOrDefault();
+
         Service!.CartItems.Add(cartItem);
         await Service!.SaveToStorage("CartItems", Service!.CartItems);
 
