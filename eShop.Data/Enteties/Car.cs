@@ -5,7 +5,7 @@ namespace eShop.Data.Enteties;
 public class Car : IEntity
 {
     public int Id { get; set; }
-    public string ModelName { get; set; }   
+    public string Name { get; set; }   
     public int Year { get; set; }
     public string Description { get; set; }
     public string PictureUrl { get; set; }
@@ -14,4 +14,6 @@ public class Car : IEntity
     public List<Fuel>? Fuels { get; set; } = [];
     public int BrandId { get; set; }
     public Brand? Brand { get; set; }
+    public int ModelId { get; set; }
+    public Model? Model { get; set; }
 }

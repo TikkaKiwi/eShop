@@ -87,6 +87,9 @@ void ConfigureAutoMapper()
         cfg.CreateMap<Brand, BrandPostDTO>().ReverseMap();
         cfg.CreateMap<Brand, BrandPutDTO>().ReverseMap();
         cfg.CreateMap<Brand, BrandGetDTO>().ReverseMap();
+        cfg.CreateMap<Model, ModelPostDTO>().ReverseMap();
+        cfg.CreateMap<Model, ModelPutDTO>().ReverseMap();
+        cfg.CreateMap<Model, ModelGetDTO>().ReverseMap();
         cfg.CreateMap<Fuel, FuelPostDTO>().ReverseMap();
         cfg.CreateMap<Fuel, FuelPutDTO>().ReverseMap();
         cfg.CreateMap<Fuel, FuelGetDTO>().ReverseMap();

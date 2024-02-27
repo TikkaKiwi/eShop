@@ -12,8 +12,8 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20240227101127_eShop")]
-    partial class eShop
+    [Migration("20240227141554_newInit")]
+    partial class newInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,26 @@ namespace eShop.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Model", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ModelName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OptionType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Models");
+                });
 
             modelBuilder.Entity("eShop.Data.Enteties.Brand", b =>
                 {
@@ -60,6 +80,9 @@ namespace eShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ModelId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ModelName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -74,6 +97,8 @@ namespace eShop.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("ModelId");
 
                     b.ToTable("Cars");
                 });
@@ -285,7 +310,15 @@ namespace eShop.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Model", "Model")
+                        .WithMany("Cars")
+                        .HasForeignKey("ModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Brand");
+
+                    b.Navigation("Model");
                 });
 
             modelBuilder.Entity("eShop.Data.Enteties.CarCategory", b =>
@@ -366,6 +399,11 @@ namespace eShop.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Filter");
+                });
+
+            modelBuilder.Entity("Model", b =>
+                {
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("eShop.Data.Enteties.Brand", b =>

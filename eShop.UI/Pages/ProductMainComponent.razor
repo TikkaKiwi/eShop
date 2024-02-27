@@ -5,16 +5,42 @@
 <main>
     <div class="d-flex mb-3">
         @*Write out how many cars are being shown on the page*@
-        <span>Showing @Service?.Products.Count cars</span>
+        <span>Showing @FilteredList.Count cars</span>
+    </div>
+
+    <div class="d-flex">
+        <div class="dropdown" onclick="toggleDropdown('brandDropdown')">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="brandDropdown" aria-haspopup="true" aria-expanded="false">
+                Car Brands
+            </button>
+            <div class="dropdown-menu" id="brandDropdownMenu">
+                @foreach (var brand in Service!.Products.Select(p => p.Brand).DistinctBy(b => b?.Id))
+                {
+                    <a class="dropdown-item @(brand?.Id == BrandFilter?.Id ? "fas fa-angle-right" : "")" href="#" @onclick="() => OnBrandClick(brand)">@brand?.BrandName</a>
+                }
+            </div>
+        </div>
+
+        <div class="dropdown ml-2 ms-2" onclick="toggleDropdown('modelDropdown')">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="modelDropdown" aria-haspopup="true" aria-expanded="false">
+                Car Models
+            </button>
+            <div class="dropdown-menu" id="modelDropdownMenu">
+                @foreach (var model in Service!.Products.Select(p => p.Model).DistinctBy(m => m?.Id))
+                {
+                    <a class="dropdown-item @(model?.Id == ModelFilter?.Id ? "fas fa-angle-right" : "")" href="#" @onclick="() => OnModelClick(model)">@model?.ModelName</a>
+                }
+            </div>
+        </div>
     </div>
 
     <div class="row d-flex flex-wrap">
-        @foreach (var product in Service!.Products)
+        @foreach (var product in FilteredList)
         {
             <div class="card col-md-3 m-3" style="width: 20rem;">
                 <img src="@product.PictureUrl" alt="Placeholder image for a car" class="pt-3 card-img-top">
                 <div class="card-body">
-                    <h5 class="card-title">@product.ModelName @product.Brand!.BrandName</h5>
+                    <h5 class="card-title">@product.Name @product.Brand!.BrandName</h5>
                     <h6>@product.Year</h6>
                     <p class="card-text">@product.Description.Truncate(50)</p>
                 </div>
@@ -50,11 +76,32 @@
     </div>
 </main>
 
+<script>
+    function toggleDropdown(dropdownId) {
+        var dropdownMenu = document.getElementById(dropdownId + 'Menu');
+        dropdownMenu.classList.toggle('show');
+    }
 
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.btn-secondary')) {
+            var dropdowns = document.getElementsByClassName('dropdown-menu');
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+</script>
 
 @code {
     [CascadingParameter(Name = "Service")] public UIService? Service { get; set; }
     [Parameter] public EventCallback OnChange { get; set; }
+    public BrandGetDTO? BrandFilter = null;
+    public ModelGetDTO? ModelFilter = null;
+    public List<CarGetDTO> FilteredList = [];
 
     // Set the category to 1 when loading page for first time
     protected override async Task OnInitializedAsync()
@@ -63,7 +110,37 @@
         {
             Service.CurrentCategoryId = 1;
             await Service.GetProductsAsync();
+            FilteredList = Service.Products;
         }
+    }
+
+    void FilterList()
+    {
+        FilteredList = Service!.Products
+            .Where(prod =>
+                (BrandFilter == null || prod.Brand?.Id == BrandFilter.Id) &&
+                (ModelFilter == null || prod.Model?.Id == ModelFilter.Id))
+            .ToList();
+    }
+
+    void OnBrandClick(BrandGetDTO? brand)
+    {
+        if (brand?.Id == BrandFilter?.Id)
+            BrandFilter = null;
+        else
+            BrandFilter = brand;
+
+        FilterList();
+    }
+
+    void OnModelClick(ModelGetDTO? model)
+    {
+        if (model?.Id == ModelFilter?.Id)
+            ModelFilter = null;
+        else
+            ModelFilter = model;
+
+        FilterList();
     }
 
     void OnFuelClick(CarGetDTO product, FuelGetDTO fuel)
@@ -81,12 +158,11 @@
 
     async Task AddToCart(CarGetDTO product)
     {
-
-
         var cartItem = mapper.Map<CartItemDTO>(product);
         cartItem.Colour = product.Colours!.FirstOrDefault(c => c.IsSelected);
         cartItem.Fuel = product.Fuels!.FirstOrDefault(f => f.IsSelected);
         cartItem.Brand = product.Brand;
+        cartItem.Model = product.Model;
 
         // If no Colour is selected, just choose an avaiailable one
         if(cartItem.Colour == null)
@@ -98,7 +174,6 @@
 
         Service!.CartItems.Add(cartItem);
         await Service!.SaveToStorage("CartItems", Service!.CartItems);
-
 
         if (OnChange.HasDelegate)
             await OnChange.InvokeAsync();

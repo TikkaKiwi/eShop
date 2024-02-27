@@ -2,11 +2,11 @@
     <img src="@CartItem!.PictureUrl" width="30%;" height="30%" />
     <div class="d-flex flex-column ms-3">
         <div class="d-flex flex-column">
-            <h3>@CartItem.ModelName @CartItem.Brand!.BrandName</h3>
+            <h3>@CartItem.Name</h3>
             <p>@CartItem.Description</p>
             <table class="table mb-0">
                 <tbody>
-                    <tr><td class="border-0 p-0">Model</td><td class="border-0 p-0"><div class="ms-2 badge text-bg-light rounded-0 fw-normal">@CartItem.ModelName</div></td></tr>
+                    <tr><td class="border-0 p-0">Model</td><td class="border-0 p-0"><div class="ms-2 badge text-bg-light rounded-0 fw-normal">@CartItem.Model.ModelName</div></td></tr>
                     <tr><td class="border-0 p-0">Brand</td><td class="border-0 p-0"><div class="ms-2 badge text-bg-light rounded-0 fw-normal">@CartItem.Brand!.BrandName</div></td></tr>
                 <tr><td class="border-0 p-0">Fuel</td><td class="border-0 p-0"><div class="ms-2 badge text-bg-light rounded-0 fw-normal">@CartItem.Fuel!.FuelName</div></td></tr>
                     <tr>

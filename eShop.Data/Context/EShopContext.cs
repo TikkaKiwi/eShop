@@ -9,7 +9,7 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
     public DbSet<Colour> Colours => Set<Colour>();
     public DbSet<Fuel> Fuels => Set<Fuel>();
 
-    //public DbSet<Model> Models => Set<Model>();
+    public DbSet<Model> Models => Set<Model>();
     public DbSet<CarFuel> CarFuels => Set<CarFuel>();
     public DbSet<CarCategory> CarCategories => Set<CarCategory>();
     public DbSet<ColourCar> ColourCar => Set<ColourCar>();
@@ -66,14 +66,14 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .WithMany(f => f.Cars)
             .UsingEntity<CarFuel>();
         #endregion
-        /*
+        
         #region CarModel Many-to-Many Relationship
         builder.Entity<Car>()
             .HasOne(m => m.Model)
             .WithMany(c => c.Cars)
             .HasForeignKey(b => b.ModelId);
         #endregion
-        */
+        
         #region Filter-Options One-to-Many Relationship
         /*
         builder.Entity<Filter>()

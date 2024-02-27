@@ -21,4 +21,8 @@
 	<ProjectReference Include="..\eShop.Data.Shared\eShop.Data.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

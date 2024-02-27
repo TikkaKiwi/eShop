@@ -11,6 +11,7 @@ public class ProductDbService(EShopContext db, IMapper mapper) : DbService(db, m
     {
         IncludeNavigationsFor<Colour>();
         IncludeNavigationsFor<Brand>();
+        IncludeNavigationsFor<Model>();
         IncludeNavigationsFor<Fuel>();
 
         var productIds = GetAsync<CarCategory>(pc => pc.CategoryId.Equals(categoryId))
