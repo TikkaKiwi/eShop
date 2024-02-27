@@ -17,10 +17,30 @@ namespace eShop.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("eShop.Data.Enteties.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BrandName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OptionType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brands");
+                });
 
             modelBuilder.Entity("eShop.Data.Enteties.Car", b =>
                 {
@@ -30,11 +50,14 @@ namespace eShop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("ModelName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -46,6 +69,8 @@ namespace eShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.ToTable("Cars");
                 });
@@ -63,6 +88,21 @@ namespace eShop.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("CarCategories");
+                });
+
+            modelBuilder.Entity("eShop.Data.Enteties.CarFuel", b =>
+                {
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FuelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarId", "FuelId");
+
+                    b.HasIndex("FuelId");
+
+                    b.ToTable("CarFuels");
                 });
 
             modelBuilder.Entity("eShop.Data.Enteties.Category", b =>
@@ -186,6 +226,26 @@ namespace eShop.Data.Migrations
                     b.ToTable("FilterOption");
                 });
 
+            modelBuilder.Entity("eShop.Data.Enteties.Fuel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FuelName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OptionType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Fuels");
+                });
+
             modelBuilder.Entity("eShop.Data.Enteties.Option", b =>
                 {
                     b.Property<int>("Id")
@@ -214,6 +274,17 @@ namespace eShop.Data.Migrations
                     b.ToTable("Option");
                 });
 
+            modelBuilder.Entity("eShop.Data.Enteties.Car", b =>
+                {
+                    b.HasOne("eShop.Data.Enteties.Brand", "Brand")
+                        .WithMany("Cars")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+                });
+
             modelBuilder.Entity("eShop.Data.Enteties.CarCategory", b =>
                 {
                     b.HasOne("eShop.Data.Enteties.Car", null)
@@ -225,6 +296,21 @@ namespace eShop.Data.Migrations
                     b.HasOne("eShop.Data.Enteties.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eShop.Data.Enteties.CarFuel", b =>
+                {
+                    b.HasOne("eShop.Data.Enteties.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eShop.Data.Enteties.Fuel", null)
+                        .WithMany()
+                        .HasForeignKey("FuelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -277,6 +363,11 @@ namespace eShop.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Filter");
+                });
+
+            modelBuilder.Entity("eShop.Data.Enteties.Brand", b =>
+                {
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("eShop.Data.Enteties.Filter", b =>

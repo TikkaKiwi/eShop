@@ -9,6 +9,7 @@ public class BrandPostDTO
 public class BrandPutDTO : BrandPostDTO
 {
     public int Id { get; set; }
+    public List<CarGetDTO>? Cars { get; set; } = [];
 }
 
 public class BrandGetDTO : BrandPostDTO

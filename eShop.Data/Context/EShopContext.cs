@@ -5,11 +5,12 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Filter> Filters => Set<Filter>();
     public DbSet<Car> Cars => Set<Car>();
-    //public DbSet<Brand> Brands => Set<Brand>();
+    public DbSet<Brand> Brands => Set<Brand>();
     public DbSet<Colour> Colours => Set<Colour>();
-    //public DbSet<Model> Models => Set<Model>();
-    //public DbSet<Fuel> Fuels => Set<Fuel>();
+    public DbSet<Fuel> Fuels => Set<Fuel>();
 
+    //public DbSet<Model> Models => Set<Model>();
+    public DbSet<CarFuel> CarFuels => Set<CarFuel>();
     public DbSet<CarCategory> CarCategories => Set<CarCategory>();
     public DbSet<ColourCar> ColourCar => Set<ColourCar>();
 
@@ -20,6 +21,8 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
         #region Composite Keys
         builder.Entity<ColourCar>()
             .HasKey(pc => new { pc.CarId, pc.ColourId });
+        builder.Entity<CarFuel>()
+            .HasKey(pc => new { pc.CarId, pc.FuelId });
         builder.Entity<CarCategory>()
             .HasKey(pc => new { pc.CarId, pc.CategoryId });
         builder.Entity<FilterCategory>()
@@ -41,14 +44,14 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .UsingEntity<CarCategory>();
         #endregion
 
-        /*
+        
         #region CarBrand One-to-Many Relationship
         builder.Entity<Car>()
             .HasOne(b => b.Brand)
             .WithMany(c => c.Cars)
             .HasForeignKey(b => b.BrandId);
         #endregion
-        */
+        
 
         #region CarColour Many-to-Many Relationship
         builder.Entity<Car>()
@@ -56,14 +59,14 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .WithMany(c => c.Cars)
             .UsingEntity<ColourCar>();
         #endregion
-        /*
-        #region CarFuel one-to-Many Relationship
+        
+        #region CarFuel many-to-Many Relationship
         builder.Entity<Car>()
-            .HasOne(c => c.Fuel)
+            .HasMany(c => c.Fuels)
             .WithMany(f => f.Cars)
-            .HasForeignKey(i => i.FuelId);
+            .UsingEntity<CarFuel>();
         #endregion
-
+        /*
         #region CarModel Many-to-Many Relationship
         builder.Entity<Car>()
             .HasOne(m => m.Model)

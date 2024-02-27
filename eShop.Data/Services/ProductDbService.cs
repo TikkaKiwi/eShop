@@ -10,7 +10,8 @@ public class ProductDbService(EShopContext db, IMapper mapper) : DbService(db, m
     public async Task<List<CarGetDTO>> GetProductsByCategoryAsync(int categoryId)
     {
         IncludeNavigationsFor<Colour>();
-        IncludeNavigationsFor<Model>();
+        IncludeNavigationsFor<Brand>();
+        IncludeNavigationsFor<Fuel>();
 
         var productIds = GetAsync<CarCategory>(pc => pc.CategoryId.Equals(categoryId))
             .Select(pc => pc.CarId);
