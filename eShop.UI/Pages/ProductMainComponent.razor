@@ -77,6 +77,9 @@
         await Service!.SaveToStorage("CartItems", Service!.CartItems);
 
 
+        if (OnChange.HasDelegate)
+            await OnChange.InvokeAsync();
+
         //TODO: Spara flera produkter till shopping cart
         //TODO: Visa produkterna i shopping carten
         //TODO: Ta bort produkt från shopping cart
