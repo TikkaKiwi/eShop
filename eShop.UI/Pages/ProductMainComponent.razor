@@ -109,9 +109,14 @@
         if (Service is not null)
         {
             Service.CurrentCategoryId = 1;
-            await Service.GetProductsAsync();
             FilteredList = Service.Products;
+            await Service.GetProductsAsync();
         }
+    }
+
+    protected override void OnParametersSet()
+    {
+        FilteredList = Service!.Products;
     }
 
     void FilterList()
