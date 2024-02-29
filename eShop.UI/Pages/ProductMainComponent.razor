@@ -16,7 +16,7 @@
             <div class="dropdown-menu" id="brandDropdownMenu">
                 @foreach (var brand in Service!.Products.Select(p => p.Brand).DistinctBy(b => b?.Id))
                 {
-                    <a class="dropdown-item @(brand?.Id == BrandFilter?.Id ? "fas fa-angle-right" : "")" href="#" @onclick="() => OnBrandClick(brand)">@brand?.BrandName</a>
+                    <a class="dropdown-item @(brand?.Id == BrandFilter?.Id ? "fas fa-angle-right" : "")" href="" @onclick="() => OnBrandFilterClick(brand)">@brand?.BrandName</a>
                 }
             </div>
         </div>
@@ -28,8 +28,21 @@
             <div class="dropdown-menu" id="modelDropdownMenu">
                 @foreach (var model in Service!.Products.Select(p => p.Model).DistinctBy(m => m?.Id))
                 {
-                    <a class="dropdown-item @(model?.Id == ModelFilter?.Id ? "fas fa-angle-right" : "")" href="#" @onclick="() => OnModelClick(model)">@model?.ModelName</a>
+                    <a class="dropdown-item @(model?.Id == ModelFilter?.Id ? "fas fa-angle-right" : "")" href="" @onclick="() => OnModelFilterClick(model)">@model?.ModelName</a>
                 }
+            </div>
+        </div>
+
+        <div class="dropdown ml-2 ms-2" onclick="toggleDropdown('fuelDropdown')">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="fuelDropdown" aria-haspopup="true" aria-expanded="false">
+                Car Fuels
+            </button>
+            <div class="dropdown-menu" id="fuelDropdownMenu">
+                @foreach (var fuel in Service!.Products.SelectMany(p => p.Fuels).DistinctBy(f => f?.Id))
+                {
+                    <a class="dropdown-item @(fuel?.Id == FuelFilter?.Id ? "fas fa-angle-right" : "")" href="" @onclick="() => OnFuelFilterClick(fuel)">@fuel?.FuelName</a>
+                }
+
             </div>
         </div>
     </div>
@@ -101,6 +114,7 @@
     [Parameter] public EventCallback OnChange { get; set; }
     public BrandGetDTO? BrandFilter = null;
     public ModelGetDTO? ModelFilter = null;
+    public FuelGetDTO? FuelFilter = null;
     public List<CarGetDTO> FilteredList = [];
 
     // Set the category to 1 when loading page for first time
@@ -117,6 +131,9 @@
     protected override void OnParametersSet()
     {
         FilteredList = Service!.Products;
+        BrandFilter = null;
+        ModelFilter = null;
+        FuelFilter = null;
     }
 
     void FilterList()
@@ -124,11 +141,13 @@
         FilteredList = Service!.Products
             .Where(prod =>
                 (BrandFilter == null || prod.Brand?.Id == BrandFilter.Id) &&
-                (ModelFilter == null || prod.Model?.Id == ModelFilter.Id))
+                (ModelFilter == null || prod.Model?.Id == ModelFilter.Id) &&
+                (FuelFilter == null || prod.Fuels?.Any(f => f?.Id == FuelFilter.Id) == true))
             .ToList();
     }
 
-    void OnBrandClick(BrandGetDTO? brand)
+
+    void OnBrandFilterClick(BrandGetDTO? brand)
     {
         if (brand?.Id == BrandFilter?.Id)
             BrandFilter = null;
@@ -138,12 +157,22 @@
         FilterList();
     }
 
-    void OnModelClick(ModelGetDTO? model)
+    void OnModelFilterClick(ModelGetDTO? model)
     {
         if (model?.Id == ModelFilter?.Id)
             ModelFilter = null;
         else
             ModelFilter = model;
+
+        FilterList();
+    }
+
+    void OnFuelFilterClick(FuelGetDTO fuel)
+    {
+        if (fuel?.Id == FuelFilter?.Id)
+            FuelFilter = null;
+        else
+            FuelFilter = fuel;
 
         FilterList();
     }
