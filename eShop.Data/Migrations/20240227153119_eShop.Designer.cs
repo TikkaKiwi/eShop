@@ -12,8 +12,8 @@ using eShop.Data.Context;
 namespace eShop.Data.Migrations
 {
     [DbContext(typeof(EShopContext))]
-    [Migration("20240227141554_newInit")]
-    partial class newInit
+    [Migration("20240227153119_eShop")]
+    partial class eShop
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,7 +83,7 @@ namespace eShop.Data.Migrations
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ModelName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
