@@ -52,6 +52,7 @@ public static class HttpExtensions
         }
         catch
         {
+            var message = Results.NotFound();
             //return Results.NotFound();
         }
 

@@ -62,7 +62,7 @@ void RegisterEndpoints()
     app.AddEndPoint<Colour, ColourPostDTO, ColourPutDTO, ColourGetDTO>();
     app.AddEndPoint<CarCategory, CarCategoryPostDTO, CarCategoryDeleteDTO>();
     app.AddEndPoint<ColourCar, ColourCarPostDTO, ColourCarDeleteDTO>();
-    app.AddEndPoint<CarFuel, CarCategoryPostDTO, CarCategoryDeleteDTO>();
+    app.AddEndPoint<CarFuel, CarFuelPostDTO, CarFuelDeleteDTO>();
     app.MapGet($"/api/productsbycategory/{{categoryId}}", async (IDbService db, int categoryId) =>
     {
         try
@@ -108,8 +108,8 @@ void ConfigureAutoMapper()
         cfg.CreateMap<CarCategory, CarCategoryDeleteDTO>().ReverseMap();
         cfg.CreateMap<ColourCar, ColourCarPostDTO>().ReverseMap();
         cfg.CreateMap<ColourCar, ColourCarDeleteDTO>().ReverseMap();
-        cfg.CreateMap<CarFuel, CarCategoryPostDTO>().ReverseMap();
-        cfg.CreateMap<CarFuel, CarCategoryDeleteDTO>().ReverseMap();
+        cfg.CreateMap<CarFuel, CarFuelPostDTO>().ReverseMap();
+        cfg.CreateMap<CarFuel, CarFuelDeleteDTO>().ReverseMap();
     });
     var mapper = config.CreateMapper();
     builder.Services.AddSingleton(mapper);
