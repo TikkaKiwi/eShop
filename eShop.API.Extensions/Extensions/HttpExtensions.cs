@@ -17,16 +17,16 @@ public static class HttpExtensions
         app.MapDelete($"/api/{node}s/" + "{id}", HttpDeleteAsync<TEntity>);
     }
 
-    public static void AddEndpoint<TEntity, TDto>(this WebApplication app)
-        where TEntity : class where TDto : class
+    public static void AddEndPoint<TEntity, TPostDto, TDeleteDto>(this WebApplication app)
+        where TEntity : class where TPostDto : class where TDeleteDto : class
     {
         var node = typeof(TEntity).Name.ToLower();
-        app.MapPost($"/api/{node}s", HttpPostReferenceAsync<TEntity, TDto>);
-        app.MapDelete($"/api/{node}s", async (IDbService db, [FromBody] TDto dto) =>
+        app.MapPost($"/api/{node}s", HttpPostReferenceAsync<TEntity, TPostDto>);
+        app.MapDelete($"/api/{node}s", async (IDbService db, [FromBody] TDeleteDto dto) =>
         {
             try
             {
-                if (!db.Delete<TEntity, TDto>(dto)) 
+                if (!db.Delete<TEntity, TDeleteDto>(dto)) 
                     return Results.NotFound();
                 if (await db.SaveChangesAsync()) 
                     return Results.NoContent();

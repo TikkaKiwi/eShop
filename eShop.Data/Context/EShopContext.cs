@@ -60,14 +60,14 @@ public class EShopContext(DbContextOptions<EShopContext> builder) : DbContext(bu
             .UsingEntity<ColourCar>();
         #endregion
         
-        #region CarFuel many-to-Many Relationship
+        #region CarFuel Many-to-Many Relationship
         builder.Entity<Car>()
             .HasMany(c => c.Fuels)
             .WithMany(f => f.Cars)
             .UsingEntity<CarFuel>();
         #endregion
         
-        #region CarModel Many-to-Many Relationship
+        #region CarModel One-to-Many Relationship
         builder.Entity<Car>()
             .HasOne(m => m.Model)
             .WithMany(c => c.Cars)

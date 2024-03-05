@@ -64,7 +64,7 @@ void ConfigureAutoMapper()
         cfg.CreateMap<Category, CategoryGetDTO>().ReverseMap();
         cfg.CreateMap<Category, CategoryPutDTO>().ReverseMap();
         cfg.CreateMap<Category, CategorySmallDTO>().ReverseMap();
-        cfg.CreateMap<CarCategory, CarCategoryDTO>().ReverseMap();
+        //cfg.CreateMap<CarCategory, CarCategoryDTO>().ReverseMap();
     });
     var mapper = config.CreateMapper();
     builder.Services.AddSingleton(mapper);
