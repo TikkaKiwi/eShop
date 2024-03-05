@@ -56,6 +56,10 @@ app.Run();
 void RegisterEndpoints()
 {
     app.AddEndPoint<Car, CarPostDTO, CarPutDTO, CarGetDTO>();//+ "{categoryId}"
+    app.AddEndPoint<Brand, BrandPostDTO, BrandPutDTO, BrandGetDTO>();
+    app.AddEndPoint<Model, ModelPostDTO, ModelPutDTO, ModelGetDTO>();
+    app.AddEndPoint<Fuel, FuelPostDTO, FuelPutDTO, FuelGetDTO>();
+    app.AddEndPoint<Colour, ColourPostDTO, ColourPutDTO, ColourGetDTO>();
     app.MapGet($"/api/productsbycategory/{{categoryId}}", async (IDbService db, int categoryId) =>
     {
         try
