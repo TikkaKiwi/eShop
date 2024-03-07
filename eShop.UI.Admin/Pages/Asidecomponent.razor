@@ -28,6 +28,9 @@
 </aside>
 
 @code {
+    [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
+    [Parameter] public EventCallback OnChange { get; set; }
+
     void OnClick(){
 
     }

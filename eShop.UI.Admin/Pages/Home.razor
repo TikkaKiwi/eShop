@@ -1,12 +1,25 @@
 ﻿@page "/"
-<PageTitle>Home</PageTitle>
+@inject UIAdminService Service
 
+<PageTitle>Home</PageTitle>
 
 <HeaderComponent />
 <section id="viewport" class="py-2 vh-100">
     <div class="d-flex shadow-lg p-3 mx-5">
         <div class="flex-shrink-1 me-4">
-            <Asidecomponent/>
+        <CascadingValue Value="Service" Name="Service">
+            <!-- Sidebar -->
+            <div class="flex-shrink-1 me-4">
+                <AsideComponent OnChange="OnChange" />
+            </div>
+        </CascadingValue>
         </div>
     </div>
 </section>
+
+@code {
+    void OnChange()
+    {
+
+    }
+}

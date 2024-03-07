@@ -15,11 +15,6 @@ public class UIService(CategoryHttpClient categoryHttp,
         new LinkGroup
         {
             Name = "Categories"
-            /*,LinkOptions = new(){
-                new LinkOption { Id = 1, Name = "Women", IsSelected = true },
-                new LinkOption { Id = 2, Name = "Men", IsSelected = false },
-                new LinkOption { Id = 3, Name = "Children", IsSelected = false }
-            }*/
         }
     ];
     public int CurrentCategoryId { get; set; }
