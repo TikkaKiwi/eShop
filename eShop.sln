@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.API.Products", "eShop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.UI.Storage", "eShop.UI.Storage\eShop.UI.Storage.csproj", "{DAB73BDC-C810-4883-8D7D-C5662CF2FFB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShop.UI.Admin", "eShop.UI.Admin\eShop.UI.Admin.csproj", "{5AD4A198-34F4-4DA7-9938-132A44FEDB88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShop.UI.Admin", "eShop.UI.Admin\eShop.UI.Admin.csproj", "{5AD4A198-34F4-4DA7-9938-132A44FEDB88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
