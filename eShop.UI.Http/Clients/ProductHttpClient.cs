@@ -14,6 +14,27 @@ public class ProductHttpClient
         _httpClient.BaseAddress = new Uri($"{_baseAddress}products");
     }
 
+    public async Task<List<CarGetDTO>> GetProductsAsync()
+    {
+        try
+        {
+            // Use the relative path, not the base address here
+            string relativePath = "getallproducts";
+            using HttpResponseMessage response = await _httpClient.GetAsync(relativePath);
+            response.EnsureSuccessStatusCode();
+
+            var resultStream = await response.Content.ReadAsStreamAsync();
+            var result = await JsonSerializer.DeserializeAsync<List<CarGetDTO>>(resultStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return result ?? new List<CarGetDTO>();
+        }
+        catch (Exception ex)
+        {
+            return new List<CarGetDTO>();
+        }
+    }
+
     public async Task<List<CarGetDTO>> GetProductsAsync(int categoryId)
     {
         try
@@ -27,33 +48,12 @@ public class ProductHttpClient
             var result = await JsonSerializer.DeserializeAsync<List<CarGetDTO>>(resultStream,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            return result ?? [];
+            return result ?? new List<CarGetDTO>();
         }
         catch (Exception ex)
         {
-            return [];
+            return new List<CarGetDTO>();
         }
     }
 
-    // Overload, if no category is specified, retreive all cars.
-    public async Task<List<CarGetDTO>> GetProductsAsync()
-    {
-        try
-        {
-            // Use the relative path, not the base address here
-            string relativePath = "cars";
-            using HttpResponseMessage response = await _httpClient.GetAsync(relativePath);
-            response.EnsureSuccessStatusCode();
-
-            var resultStream = await response.Content.ReadAsStreamAsync();
-            var result = await JsonSerializer.DeserializeAsync<List<CarGetDTO>>(resultStream,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-            return result ?? [];
-        }
-        catch (Exception ex)
-        {
-            return [];
-        }
-    }
 }

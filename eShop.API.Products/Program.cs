@@ -76,6 +76,20 @@ void RegisterEndpoints()
 
         return Results.BadRequest($"Couldn't get the requested products of type {typeof(Car).Name}.");
     });
+
+    app.MapGet($"/api/getallproducts", async (IDbService db) =>
+    {
+        try
+        {
+            var result = await ((ProductDbService)db).GetAllProductsWithNavs();
+            return Results.Ok(result);
+        }
+        catch
+        {
+        }
+
+        return Results.BadRequest($"Couldn't get the requested products of type {typeof(Car).Name}.");
+    });
 }
 
 void RegisterServices()

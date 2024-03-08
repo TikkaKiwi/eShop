@@ -20,6 +20,23 @@ public class ProductDbService(EShopContext db, IMapper mapper) : DbService(db, m
 
         return MapList<Car, CarGetDTO>(products);
     }
+
+    public async Task<List<CarGetDTO>> GetAllProductsWithNavs()
+    {
+        IncludeNavigationsFor<Colour>();
+        IncludeNavigationsFor<Brand>();
+        IncludeNavigationsFor<Model>();
+        IncludeNavigationsFor<Fuel>();
+
+        var products = await GetAsync<Car>(_ => true).ToListAsync();
+
+        return MapList<Car, CarGetDTO>(products);
+    }
+
+
+
+
+
     public List<TDto> MapList<TEntity, TDto>(List<TEntity> entities)
     where TEntity : class
     where TDto : class

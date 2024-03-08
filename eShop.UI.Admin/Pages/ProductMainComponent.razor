@@ -32,6 +32,14 @@
 @code{
     [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (Service is not null)
+        {
+            await Service.GetProductsAsync();
+        }
+    }
+
     void OnEditClick(CarGetDTO product)
     {
         
