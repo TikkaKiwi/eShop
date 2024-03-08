@@ -9,8 +9,13 @@
         <div class="flex-shrink-1 me-4">
         <CascadingValue Value="Service" Name="Service">
             <!-- Sidebar -->
-            <div class="flex-shrink-1 me-4">
-                <AsideComponent OnChange="OnChange" />
+            <div class="d-flex">
+                <div class="flex-shrink-1 me-4">
+                    <Asidecomponent OnChange="OnChange" />
+                </div>
+                <div>
+                    <ProductMainComponent />
+                </div>
             </div>
         </CascadingValue>
         </div>

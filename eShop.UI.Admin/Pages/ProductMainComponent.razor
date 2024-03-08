@@ -1,7 +1,43 @@
 ﻿<section>
+    <h6>Cars in Database: @Service!.Products.Count</h6>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var product in Service!.Products)
+            {
 
+                <tr>
+                    <th scope="row"><img src="@product.PictureUrl" alt="Placeholder image for a car" class="position-relative top-0 end-0" style="max-height:50px"></th>
+                    <td>@product.Model!.ModelName</td>
+                    <td>@product.Brand!.BrandName</td>
+                    <td>@product.Description @*Remember to add a Truncate*@</td>
+                    <td>
+                        <button type="button" class="border border-2 border-primary" @onclick="() => OnEditClick(product)">EDIT</button>
+                        <button type="button" class="border border-2 border-danger" @onclick="() => OnDeleteClick(product)">DELETE</button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
 </section>
 
-@code {
-    
+@code{
+    [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
+
+    void OnEditClick(CarGetDTO product)
+    {
+        
+    }
+    void OnDeleteClick(CarGetDTO product)
+    {
+
+    }
 }
