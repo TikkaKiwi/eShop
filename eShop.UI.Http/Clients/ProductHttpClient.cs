@@ -61,7 +61,7 @@ public class ProductHttpClient
         try
         {
             // Use the relative path, not the base address here
-            string relativePath = $"products/{id}";
+            string relativePath = $"cars/{id}";
             using HttpResponseMessage response = await _httpClient.DeleteAsync(relativePath);
             response.EnsureSuccessStatusCode();
         }
