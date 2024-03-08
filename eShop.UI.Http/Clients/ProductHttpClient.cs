@@ -56,4 +56,19 @@ public class ProductHttpClient
         }
     }
 
+    public async Task DeleteProductAsync(int id)
+    {
+        try
+        {
+            // Use the relative path, not the base address here
+            string relativePath = $"products/{id}";
+            using HttpResponseMessage response = await _httpClient.DeleteAsync(relativePath);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            //return Results.NotFound();
+        }
+    }
+
 }

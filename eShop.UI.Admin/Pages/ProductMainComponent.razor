@@ -1,4 +1,5 @@
-﻿<section>
+﻿<DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
+<section>
     <h6>Cars in Database: @Service!.Products.Count</h6>
 
     <div class="d-flex">
@@ -68,14 +69,13 @@
                 </td>
                 <td>@product.Description @*Remember to add a Truncate*@</td>
                 <td>
-                    <button type="button" class="border border-2 border-primary" @onclick="() => OnEditClick(product)">EDIT</button>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#delete" class="border border-2 border-danger">DELETE</button>
+                    <button type="button" class="border border-2 border-primary">EDIT</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#delete" class="border border-2 border-danger" @onclick="() => ShowDeleteModal(product)">DELETE</button>
                 </td>
             </tr>
         }
         </tbody>
     </table>
-    <DeleteItem />
 </section>
 
 <script>
@@ -104,6 +104,7 @@
     public ModelGetDTO? ModelFilter = null;
     public FuelGetDTO? FuelFilter = null;
     public List<CarGetDTO> FilteredList = [];
+    private DeleteItem? deleteItemComponent;
 
     protected override async Task OnInitializedAsync()
     {
@@ -117,9 +118,21 @@
     {
         
     }
-    void OnDeleteClick(CarGetDTO product)
+    private async Task ShowDeleteModal(CarGetDTO product)
     {
-        
+        if (deleteItemComponent != null)
+        {
+            await deleteItemComponent.ShowDeleteConfirmation(product);
+            // Use JS Interop to show the modal, or trigger it directly from your component
+            // e.g., await JS.InvokeVoidAsync("bootstrap.Modal.getInstance", "#delete").show();
+        }
+    }
+
+    private void OnProductDeleted(CarGetDTO product)
+    {
+        // Remove the deleted product from the list
+        Service?.Products.Remove(product);
+        StateHasChanged(); // Re-render the component to reflect the changes
     }
 
     protected override void OnParametersSet()
