@@ -32,7 +32,7 @@
     public string? ConfirmMessage { get; set; }
     public CarGetDTO? SelectedProduct { get; set; }
     public string? SelectedProductImage { get; set; }
-    public bool ShowSuccessMessage { get; set; } = false;
+    public bool ShowSuccessMessage { get; set; }
 
     public EventCallback<CarGetDTO> OnProductSelected { get; set; }
     [Parameter]
@@ -41,9 +41,10 @@
 
     public async Task ShowDeleteConfirmation(CarGetDTO product)
     {
+        ShowSuccessMessage = false;
         SelectedProduct = product;
         SelectedProductImage = product.PictureUrl;
-        ConfirmMessage = $"Are you sure you want to delete {product.Name}?";
+        ConfirmMessage = $"Are you sure you want to delete {product.Brand!.BrandName} {product.Model!.ModelName}?";
         await OnProductSelected.InvokeAsync(product);
         StateHasChanged(); // Add this line
     }

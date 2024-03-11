@@ -1,0 +1,87 @@
+﻿<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel">@ConfirmMessage</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (!ShowSuccessMessage)
+                {
+                    @if (SelectedProduct != null)
+                    {
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Picture Url</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.PictureUrl" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Model</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.Model!.ModelName" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Brand</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.Brand!.BrandName" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Year</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.Year" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Description</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.Description" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        
+
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-success" role="alert">
+                        Product edited successfully!
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (!ShowSuccessMessage)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="() => EditProduct()">Edit</button>
+                }
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
+    public string? ConfirmMessage { get; set; }
+    public CarGetDTO? SelectedProduct { get; set; }
+    public bool ShowSuccessMessage { get; set; }
+
+    public EventCallback<CarGetDTO> OnProductSelected { get; set; }
+    [Parameter]
+    public EventCallback<CarGetDTO> ProductEdited { get; set; }
+
+
+    public async Task ShowEditConfirmation(CarGetDTO product)
+    {
+        ShowSuccessMessage = false;
+        SelectedProduct = product;
+        ConfirmMessage = $"Edit {product.Brand?.BrandName} {product.Name}";
+        await OnProductSelected.InvokeAsync(product);
+        StateHasChanged(); // Add this line
+    }
+
+    private async Task EditProduct()
+    {
+        if (SelectedProduct != null)
+        {
+            await Service!.EditProductAsync(SelectedProduct);
+            ShowSuccessMessage = true;
+            await ProductEdited.InvokeAsync(SelectedProduct);
+            SelectedProduct = null; // Reset after deletion
+            StateHasChanged(); // Ensure the component re-renders to show the success message
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using eShop.API.DTO.DTOs;
+﻿using System.Text;
+using eShop.API.DTO.DTOs;
 using System.Text.Json;
 
 namespace eShop.UI.Http.Clients;
@@ -63,6 +64,23 @@ public class ProductHttpClient
             // Use the relative path, not the base address here
             string relativePath = $"cars/{id}";
             using HttpResponseMessage response = await _httpClient.DeleteAsync(relativePath);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception ex)
+        {
+            //return Results.NotFound();
+        }
+    }
+
+    public async Task EditProductAsync(CarPutDTO product)
+    {
+        //edit a product
+        try
+        {
+            // Use the relative path, not the base address here
+            string relativePath = $"cars/{product.Id}";
+            var productJson = new StringContent(JsonSerializer.Serialize(product), Encoding.UTF8, "application/json");
+            using HttpResponseMessage response = await _httpClient.PutAsync(relativePath, productJson);
             response.EnsureSuccessStatusCode();
         }
         catch (Exception ex)

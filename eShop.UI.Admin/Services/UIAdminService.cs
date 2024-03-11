@@ -30,5 +30,9 @@ namespace eShop.UI.Admin.Services
         //Function to delete a product
         public async Task DeleteProductAsync(int id) =>
             await productHttp.DeleteProductAsync(id);
+
+        //Function to edit a product
+        public async Task EditProductAsync(CarPutDTO product) =>
+            await productHttp.EditProductAsync(product);
     }
 }
