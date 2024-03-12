@@ -7,16 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\Images\car1.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\Images\car2.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\Images\car3.png" />
-    <_ContentIncludedByDefault Remove="wwwroot\Images\car4.webp" />
-    <_ContentIncludedByDefault Remove="wwwroot\Images\car5.webp" />
-    <_ContentIncludedByDefault Remove="wwwroot\Images\car6.webp" />
-    <_ContentIncludedByDefault Remove="wwwroot\Images\car7.webp" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
