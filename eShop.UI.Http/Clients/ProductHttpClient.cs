@@ -109,6 +109,28 @@ public class ProductHttpClient
         {
             return new List<ModelGetDTO>();
         }
-    }   
+    }
+    
+    //Get all brands from BrandGetDTO
+    public async Task<List<BrandGetDTO>> GetBrandsAsync()
+    {
+        try
+        {
+            // Use the relative path, not the base address here
+            string relativePath = "brands/";
+            using HttpResponseMessage response = await _httpClient.GetAsync(relativePath);
+            response.EnsureSuccessStatusCode();
+
+            var resultStream = await response.Content.ReadAsStreamAsync();
+            var result = await JsonSerializer.DeserializeAsync<List<BrandGetDTO>>(resultStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return result ?? new List<BrandGetDTO>();
+        }
+        catch (Exception ex)
+        {
+            return new List<BrandGetDTO>();
+        }
+    }
 
 }
