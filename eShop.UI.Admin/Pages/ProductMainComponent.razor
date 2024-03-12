@@ -1,5 +1,8 @@
-﻿<DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
+﻿
+<CascadingValue Value="Service" Name="Service">
+<DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
 <EditItem ProductEdited="OnProductEdited" @ref="editItemComponent"/>
+</CascadingValue>
 <section>
     <h6>Cars in Database: @Service!.Products.Count</h6>
 
@@ -48,6 +51,7 @@
             <th scope="col">Image</th>
             <th scope="col">Model</th>
             <th scope="col">Brand</th>
+            <th scope="col">Year</th>
             <th scope="col">Fuel</th>
             <th scope="col">Description</th>
         </tr>
@@ -60,6 +64,7 @@
                 <th scope="row"><img src="@product.PictureUrl" alt="Placeholder image for a car" class="position-relative top-0 end-0" style="max-height:50px"></th>
                 <td>@product.Model!.ModelName</td>
                 <td>@product.Brand!.BrandName</td>
+                <td>@product.Year</td>
                 <td>
                     <div class="border border-3 rounded px-2">
                         @foreach (var fuel in product.Fuels)
@@ -132,6 +137,9 @@
         {
             Service!.Products[index] = product;
         }
+        //Update the product in list if the product.ModelId is changed
+
+
         StateHasChanged(); // Re-render the component to reflect the changes
     }
     private async Task ShowDeleteModal(CarGetDTO product)
@@ -198,5 +206,10 @@
             FuelFilter = fuel;
 
         FilterList();
+    }
+
+    void OnChange()
+    {
+
     }
 }

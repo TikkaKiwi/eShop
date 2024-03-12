@@ -8,6 +8,7 @@ namespace eShop.UI.Admin.Services
     {
         List<CategoryGetDTO> Categories { get; set; } = [];
         public List<CarGetDTO> Products { get; private set; } = [];
+        public List<ModelGetDTO> Models { get; private set; } = [];
         public List<LinkGroup> CaregoryLinkGroups { get; private set; } =
         [
             new LinkGroup
@@ -34,5 +35,9 @@ namespace eShop.UI.Admin.Services
         //Function to edit a product
         public async Task EditProductAsync(CarPutDTO product) =>
             await productHttp.EditProductAsync(product);
+
+        //Get all models 
+        public async Task GetModelsAsync() =>
+            Models = await productHttp.GetModelsAsync();
     }
 }
