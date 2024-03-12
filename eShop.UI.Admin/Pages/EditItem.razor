@@ -101,7 +101,7 @@
     {
         ShowSuccessMessage = false;
         SelectedProduct = product;
-        ConfirmMessage = $"Edit {product.Brand?.BrandName} {product.Name}";
+        ConfirmMessage = $"Edit {product.Brand?.BrandName} {product.Model!.ModelName}";
         await OnProductSelected.InvokeAsync(product);
         StateHasChanged(); // Add this line
     }
