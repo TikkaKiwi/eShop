@@ -1,0 +1,135 @@
+﻿<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel">@ConfirmMessage</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (!ShowSuccessMessage)
+                {
+                    @if (SelectedProduct != null)
+                    {
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Picture Url</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.PictureUrl" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="mb-3">
+                            <p>Select Car Model</p>
+                            <select class="form-select" @bind="SelectedModelId" aria-label="Default select example">
+                                <option selected>@SelectedProduct.Model!.ModelName</option>
+                                @foreach (var model in Service!.Models)
+                                {
+                                    if (SelectedProduct.ModelId != model.Id)
+                                    {
+                                        <option value="@model.Id">@model.ModelName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        @*<div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon2">Model</span>
+                <input type="text" class="form-control" @bind="SelectedProduct.Model!.ModelName" aria-label="Model" aria-describedby="basic-addon1">
+                </div>*@
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon3">Brand</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.Brand!.BrandName" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon4">Year</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.Year" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon5">Description</span>
+                            <input type="text" class="form-control" @bind="SelectedProduct.Description" aria-label="Model" aria-describedby="basic-addon1">
+                        </div>
+
+
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-success" role="alert">
+                        Product edited successfully!
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                @if (!ShowSuccessMessage)
+                {
+                    <button type="button" class="btn btn-primary" @onclick="() => EditProduct()">Edit</button>
+                }
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
+
+    public string? ConfirmMessage { get; set; }
+    public CarGetDTO? SelectedProduct { get; set; }
+    public bool ShowSuccessMessage { get; set; }
+
+    public EventCallback<CarGetDTO> OnProductSelected { get; set; }
+    [Parameter]
+    public EventCallback<CarGetDTO> ProductEdited { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Service is not null)
+        {
+            await Service.GetModelsAsync();
+        }
+    }
+
+
+    public async Task ShowEditConfirmation(CarGetDTO product)
+    {
+        ShowSuccessMessage = false;
+        SelectedProduct = product;
+        ConfirmMessage = $"Edit {product.Brand?.BrandName} {product.Name}";
+        await OnProductSelected.InvokeAsync(product);
+        StateHasChanged(); // Add this line
+    }
+
+    private async Task EditProduct()
+    {
+        if (SelectedProduct != null)
+        {
+            if (SelectedModelId != 0)
+            {
+                SelectedProduct!.ModelId = SelectedModelId;
+            }
+
+            await Service!.EditProductAsync(SelectedProduct);
+            ShowSuccessMessage = true;
+            await ProductEdited.InvokeAsync(SelectedProduct);
+            SelectedProduct = null; // Reset after deletion
+            StateHasChanged(); // Ensure the component re-renders to show the success message
+        }
+    }
+
+    private int SelectedModelId { get; set; } = 0;
+
+    private void ModelSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int modelId))
+        {
+            SelectedModelId = modelId;
+
+            // Assuming SelectedProduct has a ModelId property you want to update
+            SelectedProduct!.ModelId = SelectedModelId;
+
+            // If you need to update the database at this point, call your update method here
+            // For example: await Service.UpdateProductAsync(SelectedProduct);
+        }
+        else
+        {
+            // Handle the case where the selected value cannot be parsed into an int
+            // This might occur if the default "Select Car Model" option is selected
+        }
+    }
+}

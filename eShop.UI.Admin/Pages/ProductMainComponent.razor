@@ -75,6 +75,7 @@
                 </td>
                 <td>@product.Description @*Remember to add a Truncate*@</td>
                 <td>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#edit" class="border border-2 border-warning" @onclick="() => ShowAddModal(product)">EDIT</button>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#edit" class="border border-2 border-warning" @onclick="() => ShowEditModal(product)">EDIT</button>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#delete" class="border border-2 border-danger" @onclick="() => ShowDeleteModal(product)">DELETE</button>
                 </td>
@@ -119,6 +120,11 @@
         {
             await Service.GetProductsAsync();
         }
+    }
+
+    private async Task ShowAddModal(CarGetDTO product)
+    {
+        
     }
 
     private async Task ShowEditModal(CarGetDTO product)
