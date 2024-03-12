@@ -9,6 +9,7 @@ namespace eShop.UI.Admin.Services
         List<CategoryGetDTO> Categories { get; set; } = [];
         public List<CarGetDTO> Products { get; private set; } = [];
         public List<ModelGetDTO> Models { get; private set; } = [];
+        public List<BrandGetDTO> Brands { get; private set; } = [];
         public List<LinkGroup> CaregoryLinkGroups { get; private set; } =
         [
             new LinkGroup
@@ -39,5 +40,9 @@ namespace eShop.UI.Admin.Services
         //Get all models 
         public async Task GetModelsAsync() =>
             Models = await productHttp.GetModelsAsync();
+
+        //Get all brands
+        public async Task GetBrandsAsync() =>
+            Brands = await productHttp.GetBrandsAsync();
     }
 }
