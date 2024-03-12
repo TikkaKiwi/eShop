@@ -21,7 +21,7 @@
                                 <option value="@SelectedProduct.ModelId" selected>@SelectedProduct.Model!.ModelName</option>
                                 @foreach (var model in Service!.Models)
                                 {
-                                    if (SelectedProduct.BrandId != model.Id)
+                                    if (SelectedProduct.ModelId != model.Id)
                                     {
                                         <option value="@model.Id">@model.ModelName</option>
                                     }
