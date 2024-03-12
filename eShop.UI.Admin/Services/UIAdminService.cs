@@ -44,5 +44,8 @@ namespace eShop.UI.Admin.Services
         //Get all brands
         public async Task GetBrandsAsync() =>
             Brands = await productHttp.GetBrandsAsync();
+
+        public async Task<BrandGetDTO> GetBrandByIdAsync(int id) =>
+            await productHttp.GetBrandByIdAsync(id);
     }
 }

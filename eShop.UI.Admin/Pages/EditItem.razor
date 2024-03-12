@@ -35,7 +35,7 @@
 
                         <div class="mb-3">
                             <p>Select Car Brand</p>
-                            <select class="form-select" @bind="SelectedBrandId" aria-label="Default select example">
+                            <select class="form-select" @onchange="OnBrandChange" aria-label="Default select example">
                                 <option value="@SelectedProduct.BrandId" selected>@SelectedProduct.Brand!.BrandName</option>
                                 @foreach (var brand in Service!.Brands)
                                 {
@@ -126,6 +126,7 @@
             if (SelectedBrandId != 0)
             {
                 SelectedProduct!.BrandId = SelectedBrandId;
+                SelectedProduct.Brand = await Service.GetBrandByIdAsync(SelectedBrandId);
             }
 
             await Service!.EditProductAsync(SelectedProduct);
@@ -133,6 +134,23 @@
             await ProductEdited.InvokeAsync(SelectedProduct);
             SelectedProduct = null; // Reset after deletion
             StateHasChanged(); // Ensure the component re-renders to show the success message
+        }
+    }
+
+    private async Task OnBrandChange(ChangeEventArgs e)
+    {
+        if (e.Value is string valueString)
+        {
+            // Convert the selected value to int
+            if (int.TryParse(valueString, out int id))
+            {
+                SelectedBrandId = id;
+                // Perform further actions if needed, e.g., updating the UI or fetching related data
+            }
+            else
+            {
+                // Handle the case where the conversion fails, if necessary
+            }
         }
     }
 }

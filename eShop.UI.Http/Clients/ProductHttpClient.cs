@@ -133,4 +133,25 @@ public class ProductHttpClient
         }
     }
 
+    public async Task<BrandGetDTO> GetBrandByIdAsync(int Id)
+    {
+        try
+        {
+            // Use the relative path, not the base address here
+            string relativePath = $"brands/{Id}";
+            using HttpResponseMessage response = await _httpClient.GetAsync(relativePath);
+            response.EnsureSuccessStatusCode();
+
+            var resultStream = await response.Content.ReadAsStreamAsync();
+            var result = await JsonSerializer.DeserializeAsync<BrandGetDTO>(resultStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return result ?? new BrandGetDTO();
+        }
+        catch (Exception ex)
+        {
+            return new BrandGetDTO();
+        }
+    }
+
 }
