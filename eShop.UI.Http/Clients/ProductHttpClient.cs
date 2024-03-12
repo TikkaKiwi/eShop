@@ -154,4 +154,25 @@ public class ProductHttpClient
         }
     }
 
+    public async Task<ModelGetDTO> GetModelByIdAsync(int Id)
+    {
+        try
+        {
+            // Use the relative path, not the base address here
+            string relativePath = $"models/{Id}";
+            using HttpResponseMessage response = await _httpClient.GetAsync(relativePath);
+            response.EnsureSuccessStatusCode();
+
+            var resultStream = await response.Content.ReadAsStreamAsync();
+            var result = await JsonSerializer.DeserializeAsync<ModelGetDTO>(resultStream,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return result ?? new ModelGetDTO();
+        }
+        catch (Exception ex)
+        {
+            return new ModelGetDTO();
+        }
+    }
+
 }

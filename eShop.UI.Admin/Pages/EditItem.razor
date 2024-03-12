@@ -14,24 +14,20 @@
                             <span class="input-group-text" id="basic-addon1">Picture Url</span>
                             <input type="text" class="form-control" @bind="SelectedProduct.PictureUrl" aria-label="Model" aria-describedby="basic-addon1">
                         </div>
+
                         <div class="mb-3">
                             <p>Select Car Model</p>
-                            <select class="form-select" @bind="SelectedModelId" aria-label="Default select example">
-                                <option selected>@SelectedProduct.Model!.ModelName</option>
+                            <select class="form-select" @onchange="OnModelChange" aria-label="Default select example">
+                                <option value="@SelectedProduct.ModelId" selected>@SelectedProduct.Model!.ModelName</option>
                                 @foreach (var model in Service!.Models)
                                 {
-                                    if (SelectedProduct.ModelId != model.Id)
+                                    if (SelectedProduct.BrandId != model.Id)
                                     {
                                         <option value="@model.Id">@model.ModelName</option>
                                     }
                                 }
                             </select>
                         </div>
-                        
-                        @*<div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon2">Model</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.Model!.ModelName" aria-label="Model" aria-describedby="basic-addon1">
-                        </div>*@
 
                         <div class="mb-3">
                             <p>Select Car Brand</p>
@@ -47,10 +43,6 @@
                             </select>
                         </div>
 
-                        @*<div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon3">Brand</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.Brand!.BrandName" aria-label="Model" aria-describedby="basic-addon1">
-                        </div>*@
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon4">Year</span>
                             <input type="text" class="form-control" @bind="SelectedProduct.Year" aria-label="Model" aria-describedby="basic-addon1">
@@ -121,12 +113,13 @@
             if (SelectedModelId != 0)
             {
                 SelectedProduct!.ModelId = SelectedModelId;
+                SelectedProduct.Model = await Service!.GetModelByIdAsync(SelectedModelId);
             }
 
             if (SelectedBrandId != 0)
             {
                 SelectedProduct!.BrandId = SelectedBrandId;
-                SelectedProduct.Brand = await Service.GetBrandByIdAsync(SelectedBrandId);
+                SelectedProduct.Brand = await Service!.GetBrandByIdAsync(SelectedBrandId);
             }
 
             await Service!.EditProductAsync(SelectedProduct);
@@ -145,6 +138,23 @@
             if (int.TryParse(valueString, out int id))
             {
                 SelectedBrandId = id;
+                // Perform further actions if needed, e.g., updating the UI or fetching related data
+            }
+            else
+            {
+                // Handle the case where the conversion fails, if necessary
+            }
+        }
+    }
+
+    private async Task OnModelChange(ChangeEventArgs e)
+    {
+        if (e.Value is string valueString)
+        {
+            // Convert the selected value to int
+            if (int.TryParse(valueString, out int id))
+            {
+                SelectedModelId = id;
                 // Perform further actions if needed, e.g., updating the UI or fetching related data
             }
             else
