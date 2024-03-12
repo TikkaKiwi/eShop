@@ -1,4 +1,5 @@
-﻿<DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
+﻿@using eShop.UI.Admin.Extensions
+<DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
 <EditItem ProductEdited="OnProductEdited" @ref="editItemComponent"/>
 <section>
     <h6>Cars in Database: @Service!.Products.Count</h6>
@@ -70,7 +71,7 @@
                         }
                     </div>
                 </td>
-                <td>@product.Description @*Remember to add a Truncate*@</td>
+                <td>@product.Description.Truncate(30)</td>
                 <td>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#edit" class="border border-2 border-warning" @onclick="() => ShowEditModal(product)">EDIT</button>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#delete" class="border border-2 border-danger" @onclick="() => ShowDeleteModal(product)">DELETE</button>
