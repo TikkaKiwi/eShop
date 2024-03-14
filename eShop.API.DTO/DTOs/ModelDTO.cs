@@ -3,7 +3,6 @@
 public class ModelPostDTO
 {
     public string ModelName { get; set; } = string.Empty;
-    public bool IsSelected { get; set; }
 }
 
 public class ModelPutDTO : ModelPostDTO

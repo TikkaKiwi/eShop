@@ -3,7 +3,6 @@
 public class BrandPostDTO
 {
     public string BrandName { get; set; } = string.Empty;
-    public bool IsSelected { get; set; }
 }
 
 public class BrandPutDTO : BrandPostDTO
