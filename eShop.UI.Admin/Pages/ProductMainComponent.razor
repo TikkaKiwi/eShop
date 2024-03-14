@@ -65,7 +65,7 @@
         {
 
             <tr>
-                <th scope="row"><img src="@product.PictureUrl" alt="Placeholder image for a car" class="position-relative top-0 end-0" style="max-height:50px"></th>
+                    <th scope="row"><img src="https://localhost:7045/@product.PictureUrl" alt="Placeholder image for a car" class="position-relative top-0 end-0" style="max-height:50px"></th>
                 <td>@product.Model!.ModelName</td>
                 <td>@product.Brand!.BrandName</td>
                 <td>@product.Year</td>
@@ -77,7 +77,7 @@
                         }
                     </div>
                 </td>
-                <td>@product.Description @*Remember to add a Truncate*@</td>
+                <td>@product.Description.Truncate(30)</td>
                 <td>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#edit" class="border border-2 border-warning" @onclick="() => ShowEditModal(product)">EDIT</button>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#delete" class="border border-2 border-danger" @onclick="() => ShowDeleteModal(product)">DELETE</button>
