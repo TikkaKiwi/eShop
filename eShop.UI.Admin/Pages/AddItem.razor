@@ -1,4 +1,4 @@
-﻿<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+﻿<div class="modal fade" id="add" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,57 +8,47 @@
             <div class="modal-body">
                 @if (!ShowSuccessMessage)
                 {
-                    @if (SelectedProduct != null)
-                    {
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1">Picture Url</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.PictureUrl" aria-label="Model" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="mb-3">
-                            <p>Select Car Model</p>
-                            <select class="form-select" @bind="SelectedModelId" aria-label="Default select example">
-                                <option selected>@SelectedProduct.Model!.ModelName</option>
-                                @foreach (var model in Service!.Models)
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Picture Url</span>
+                        <input type="text" class="form-control" placeholder="Add Picture URL" @bind="@NewProduct!.PictureUrl" aria-label="Add Picture URL" aria-describedby="addon-wrapping">
+                    </div>
+                    <div class="input-group mb-3">
+                        <p>Select Car Model</p>
+                        <select class="form-select" @bind="NewProduct.ModelId" aria-label="Default select example">
+                            <option selected>@NewProduct!.ModelId</option>
+                            @foreach (var model in Service!.Models)
+                            {
+                                if (NewProduct.ModelId != model.Id)
                                 {
-                                    if (SelectedProduct.ModelId != model.Id)
-                                    {
-                                        <option value="@model.Id">@model.ModelName</option>
-                                    }
+                                    <option value="@model.Id">@model.ModelName</option>
                                 }
-                            </select>
-                        </div>
-
-                        @*<div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon2">Model</span>
-                <input type="text" class="form-control" @bind="SelectedProduct.Model!.ModelName" aria-label="Model" aria-describedby="basic-addon1">
-                </div>*@
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon3">Brand</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.Brand!.BrandName" aria-label="Model" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon4">Year</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.Year" aria-label="Model" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon5">Description</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.Description" aria-label="Model" aria-describedby="basic-addon1">
-                        </div>
-
-
-                    }
+                            }
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon3">Car Brand</span>
+                        <input type="text" class="form-control" placeholder="Add Car Brand" @bind="@NewProduct.BrandId" aria-label="Add Car Brand" aria-describedby="addon-wrapping">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon4">Year</span>
+                        <input type="text" class="form-control" placeholder="Add Year" aria-label="Add Year" aria-describedby="addon-wrapping">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon4">Description</span>
+                        <input type="text" class="form-control" placeholder="Add Description" aria-label="Add Description" aria-describedby="addon-wrapping">
+                    </div>
                 }
                 else
                 {
                     <div class="alert alert-success" role="alert">
-                        Product edited successfully!
+                        Product Added successfully!
                     </div>
                 }
             </div>
             <div class="modal-footer">
                 @if (!ShowSuccessMessage)
                 {
-                    <button type="button" class="btn btn-primary" @onclick="() => EditProduct()">Edit</button>
+                    <button type="button" class="btn btn-primary" @onclick="() => AddProduct()">ADD</button>
                 }
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
@@ -70,12 +60,10 @@
     [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
 
     public string? ConfirmMessage { get; set; }
-    public CarGetDTO? SelectedProduct { get; set; }
+    public CarPostDTO? NewProduct { get; set; }
     public bool ShowSuccessMessage { get; set; }
-
-    public EventCallback<CarGetDTO> OnProductSelected { get; set; }
     [Parameter]
-    public EventCallback<CarGetDTO> ProductEdited { get; set; }
+    public EventCallback<CarGetDTO> ProductAdded { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,51 +73,20 @@
         }
     }
 
+    private async Task AddProduct()
+    {
+        await Service!.AddProductAsync(NewProduct!);
+        ShowSuccessMessage = true;
+        await ProductAdded.InvokeAsync();
+        NewProduct = null;
+        StateHasChanged();
+    }
 
-    public async Task ShowEditConfirmation(CarGetDTO product)
+    public async Task ShowAddConfirmation()
     {
         ShowSuccessMessage = false;
-        SelectedProduct = product;
-        ConfirmMessage = $"Edit {product.Brand?.BrandName} {product.Name}";
-        await OnProductSelected.InvokeAsync(product);
+        ConfirmMessage = "Add a Product";
+        await ProductAdded.InvokeAsync();
         StateHasChanged(); // Add this line
-    }
-
-    private async Task EditProduct()
-    {
-        if (SelectedProduct != null)
-        {
-            if (SelectedModelId != 0)
-            {
-                SelectedProduct!.ModelId = SelectedModelId;
-            }
-
-            await Service!.EditProductAsync(SelectedProduct);
-            ShowSuccessMessage = true;
-            await ProductEdited.InvokeAsync(SelectedProduct);
-            SelectedProduct = null; // Reset after deletion
-            StateHasChanged(); // Ensure the component re-renders to show the success message
-        }
-    }
-
-    private int SelectedModelId { get; set; } = 0;
-
-    private void ModelSelected(ChangeEventArgs e)
-    {
-        if (int.TryParse(e.Value?.ToString(), out int modelId))
-        {
-            SelectedModelId = modelId;
-
-            // Assuming SelectedProduct has a ModelId property you want to update
-            SelectedProduct!.ModelId = SelectedModelId;
-
-            // If you need to update the database at this point, call your update method here
-            // For example: await Service.UpdateProductAsync(SelectedProduct);
-        }
-        else
-        {
-            // Handle the case where the selected value cannot be parsed into an int
-            // This might occur if the default "Select Car Model" option is selected
-        }
     }
 }

@@ -2,6 +2,7 @@
 <CascadingValue Value="Service" Name="Service">
 <DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
 <EditItem ProductEdited="OnProductEdited" @ref="editItemComponent"/>
+<AddItem ProductAdded="OnProductAdd" @ref="addItemComponent"/>
 </CascadingValue>
 <section>
     <h6>Cars in Database: @Service!.Products.Count</h6>
@@ -43,6 +44,7 @@
 
             </div>
         </div>
+        <button type="button" data-bs-toggle="modal" data-bs-target="#add" class="border border-2 border-warning" @onclick="() => ShowAddModal()">ADD</button>
     </div>
 
     <table class="table">
@@ -75,7 +77,6 @@
                 </td>
                 <td>@product.Description @*Remember to add a Truncate*@</td>
                 <td>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#edit" class="border border-2 border-warning" @onclick="() => ShowAddModal(product)">EDIT</button>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#edit" class="border border-2 border-warning" @onclick="() => ShowEditModal(product)">EDIT</button>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#delete" class="border border-2 border-danger" @onclick="() => ShowDeleteModal(product)">DELETE</button>
                 </td>
@@ -113,6 +114,7 @@
     public List<CarGetDTO> FilteredList = [];
     private DeleteItem? deleteItemComponent;
     private EditItem? editItemComponent;
+    private AddItem? addItemComponent;
 
     protected override async Task OnInitializedAsync()
     {
@@ -122,9 +124,21 @@
         }
     }
 
-    private async Task ShowAddModal(CarGetDTO product)
+    private async Task ShowAddModal()
     {
-        
+        if(addItemComponent != null)
+        {
+            await addItemComponent.ShowAddConfirmation();
+        }
+    }
+
+    private void OnProductAdd(CarGetDTO product)
+    {
+        if (addItemComponent != null)
+        {
+            Service!.Products.Add(product);
+            StateHasChanged();
+        }
     }
 
     private async Task ShowEditModal(CarGetDTO product)
@@ -148,6 +162,7 @@
 
         StateHasChanged(); // Re-render the component to reflect the changes
     }
+
     private async Task ShowDeleteModal(CarGetDTO product)
     {
         if (deleteItemComponent != null)

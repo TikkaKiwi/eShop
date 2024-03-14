@@ -36,6 +36,10 @@ namespace eShop.UI.Admin.Services
         public async Task EditProductAsync(CarPutDTO product) =>
             await productHttp.EditProductAsync(product);
 
+        //Function to add a product
+        public async Task AddProductAsync(CarPostDTO product) =>
+            await productHttp.AddProductAsync(product);
+
         //Get all models 
         public async Task GetModelsAsync() =>
             Models = await productHttp.GetModelsAsync();

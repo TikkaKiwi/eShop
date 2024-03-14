@@ -89,6 +89,21 @@ public class ProductHttpClient
         }
     }
 
+    public async Task AddProductAsync(CarPostDTO product)
+    {
+        try
+        {
+            string relativePath = $"cars/";
+            var productJson = new StringContent(JsonSerializer.Serialize(product), Encoding.UTF8, "application/json");
+            using HttpResponseMessage response = await _httpClient.PostAsync(relativePath, productJson);
+            response.EnsureSuccessStatusCode();
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
     //Get all models from ModelGetDTO
     public async Task<List<ModelGetDTO>> GetModelsAsync()
     {
