@@ -14,10 +14,11 @@
                             <span class="input-group-text" id="basic-addon1">Picture Url</span>
                             <input type="text" class="form-control" @bind="SelectedProduct.PictureUrl" aria-label="Model" aria-describedby="basic-addon1">
                         </div>
+
                         <div class="mb-3">
                             <p>Select Car Model</p>
-                            <select class="form-select" @bind="SelectedModelId" aria-label="Default select example">
-                                <option selected>@SelectedProduct.Model!.ModelName</option>
+                            <select class="form-select" @onchange="OnModelChange" aria-label="Default select example">
+                                <option value="@SelectedProduct.ModelId" selected>@SelectedProduct.Model!.ModelName</option>
                                 @foreach (var model in Service!.Models)
                                 {
                                     if (SelectedProduct.ModelId != model.Id)
@@ -27,15 +28,21 @@
                                 }
                             </select>
                         </div>
-                        
-                        @*<div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon2">Model</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.Model!.ModelName" aria-label="Model" aria-describedby="basic-addon1">
-                        </div>*@
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon3">Brand</span>
-                            <input type="text" class="form-control" @bind="SelectedProduct.Brand!.BrandName" aria-label="Model" aria-describedby="basic-addon1">
+
+                        <div class="mb-3">
+                            <p>Select Car Brand</p>
+                            <select class="form-select" @onchange="OnBrandChange" aria-label="Default select example">
+                                <option value="@SelectedProduct.BrandId" selected>@SelectedProduct.Brand!.BrandName</option>
+                                @foreach (var brand in Service!.Brands)
+                                {
+                                    if (SelectedProduct.BrandId != brand.Id)
+                                    {
+                                        <option value="@brand.Id">@brand.BrandName</option>
+                                    }
+                                }
+                            </select>
                         </div>
+
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon4">Year</span>
                             <input type="text" class="form-control" @bind="SelectedProduct.Year" aria-label="Model" aria-describedby="basic-addon1">
@@ -69,20 +76,23 @@
 @code
 {
     [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
+    public EventCallback<CarGetDTO> OnProductSelected { get; set; }
+    [Parameter]
+    public EventCallback<CarGetDTO> ProductEdited { get; set; }
 
     public string? ConfirmMessage { get; set; }
     public CarGetDTO? SelectedProduct { get; set; }
     public bool ShowSuccessMessage { get; set; }
 
-    public EventCallback<CarGetDTO> OnProductSelected { get; set; }
-    [Parameter]
-    public EventCallback<CarGetDTO> ProductEdited { get; set; }
+    private int SelectedModelId { get; set; } = 0;
+    private int SelectedBrandId { get; set; } = 0;
 
     protected override async Task OnInitializedAsync()
     {
         if (Service is not null)
         {
             await Service.GetModelsAsync();
+            await Service.GetBrandsAsync();
         }
     }
 
@@ -91,7 +101,7 @@
     {
         ShowSuccessMessage = false;
         SelectedProduct = product;
-        ConfirmMessage = $"Edit {product.Brand?.BrandName} {product.Name}";
+        ConfirmMessage = $"Edit {product.Brand?.BrandName} {product.Model!.ModelName}";
         await OnProductSelected.InvokeAsync(product);
         StateHasChanged(); // Add this line
     }
@@ -103,6 +113,13 @@
             if (SelectedModelId != 0)
             {
                 SelectedProduct!.ModelId = SelectedModelId;
+                SelectedProduct.Model = await Service!.GetModelByIdAsync(SelectedModelId);
+            }
+
+            if (SelectedBrandId != 0)
+            {
+                SelectedProduct!.BrandId = SelectedBrandId;
+                SelectedProduct.Brand = await Service!.GetBrandByIdAsync(SelectedBrandId);
             }
 
             await Service!.EditProductAsync(SelectedProduct);
@@ -113,25 +130,39 @@
         }
     }
 
-    private int SelectedModelId { get; set; } = 0;
-
-    private void ModelSelected(ChangeEventArgs e)
+    private async Task OnBrandChange(ChangeEventArgs e)
     {
-        if (int.TryParse(e.Value?.ToString(), out int modelId))
+        if (e.Value is string valueString)
         {
-            SelectedModelId = modelId;
-
-            // Assuming SelectedProduct has a ModelId property you want to update
-            SelectedProduct!.ModelId = SelectedModelId;
-
-            // If you need to update the database at this point, call your update method here
-            // For example: await Service.UpdateProductAsync(SelectedProduct);
-        }
-        else
-        {
-            // Handle the case where the selected value cannot be parsed into an int
-            // This might occur if the default "Select Car Model" option is selected
+            // Convert the selected value to int
+            if (int.TryParse(valueString, out int id))
+            {
+                SelectedBrandId = id;
+                // Perform further actions if needed, e.g., updating the UI or fetching related data
+            }
+            else
+            {
+                // Handle the case where the conversion fails, if necessary
+            }
         }
     }
 
+    private async Task OnModelChange(ChangeEventArgs e)
+    {
+        if (e.Value is string valueString)
+        {
+            // Convert the selected value to int
+            if (int.TryParse(valueString, out int id))
+            {
+                SelectedModelId = id;
+                // Perform further actions if needed, e.g., updating the UI or fetching related data
+            }
+            else
+            {
+                // Handle the case where the conversion fails, if necessary
+            }
+        }
+    }
 }
+
+

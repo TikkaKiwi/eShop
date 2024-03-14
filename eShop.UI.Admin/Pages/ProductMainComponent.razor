@@ -1,7 +1,8 @@
 ﻿﻿@using eShop.UI.Admin.Extensions
+<CascadingValue Value="Service" Name="Service">
 <DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
-<EditItem ProductEdited="OnProductEdited" @ref="editItemComponent"/>
 <AddItem ProductAdded="OnProductAdd" @ref="addItemComponent"/>
+</CascadingValue>
 <section>
     <h6>Cars in Database: @Service!.Products.Count</h6>
 
@@ -158,11 +159,9 @@
         {
             Service!.Products[index] = product;
         }
-        //Update the product in list if the product.ModelId is changed
-
 
         StateHasChanged(); // Re-render the component to reflect the changes
-    }
+
 
     private async Task ShowDeleteModal(CarGetDTO product)
     {
@@ -228,5 +227,10 @@
             FuelFilter = fuel;
 
         FilterList();
+
+    void OnChange()
+    {
+
     }
+}
 }

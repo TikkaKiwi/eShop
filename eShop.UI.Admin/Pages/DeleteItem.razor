@@ -43,7 +43,7 @@
     {
         ShowSuccessMessage = false;
         SelectedProduct = product;
-        SelectedProductImage = product.PictureUrl;
+        SelectedProductImage = $"https://localhost:7045/{product.PictureUrl}";
         ConfirmMessage = $"Are you sure you want to delete {product.Brand!.BrandName} {product.Model!.ModelName}?";
         await OnProductSelected.InvokeAsync(product);
         StateHasChanged(); // Add this line
