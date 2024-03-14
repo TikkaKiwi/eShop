@@ -5,7 +5,6 @@ namespace eShop.API.DTO.DTOs;
 public class FuelPostDTO
 {
     public string FuelName { get; set; }
-    public OptionType OptionType { get; set; }
 }
 
 public class FuelPutDTO : FuelPostDTO

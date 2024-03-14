@@ -1,9 +1,7 @@
-﻿
-<CascadingValue Value="Service" Name="Service">
+﻿﻿@using eShop.UI.Admin.Extensions
 <DeleteItem ProductDeleted="OnProductDeleted" @ref="deleteItemComponent" />
 <EditItem ProductEdited="OnProductEdited" @ref="editItemComponent"/>
 <AddItem ProductAdded="OnProductAdd" @ref="addItemComponent"/>
-</CascadingValue>
 <section>
     <h6>Cars in Database: @Service!.Products.Count</h6>
 
@@ -230,10 +228,5 @@
             FuelFilter = fuel;
 
         FilterList();
-    }
-
-    void OnChange()
-    {
-
     }
 }

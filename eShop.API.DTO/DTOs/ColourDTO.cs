@@ -7,7 +7,6 @@ public class ColourPostDTO
     public string ColourName { get; set; } = string.Empty;
     public string ColorHex { get; set; } = string.Empty;
     public string BkColorHex { get; set; } = string.Empty;
-    public OptionType? OptionType { get; set; }
 }
 
 public class ColourPutDTO : ColourPostDTO

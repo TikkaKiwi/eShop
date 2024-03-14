@@ -6,7 +6,6 @@ public class Fuel : IEntity
 {
     public int Id { get; set; }
     public string FuelName { get; set; } = string.Empty;
-    public OptionType? OptionType { get; set; }
     public List<Car> Cars { get; set; } = [];
 
     //public FuelType Type { get; set; }
