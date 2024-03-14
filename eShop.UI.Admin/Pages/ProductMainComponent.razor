@@ -161,7 +161,7 @@
         }
 
         StateHasChanged(); // Re-render the component to reflect the changes
-
+    }
 
     private async Task ShowDeleteModal(CarGetDTO product)
     {
@@ -227,10 +227,5 @@
             FuelFilter = fuel;
 
         FilterList();
-
-    void OnChange()
-    {
-
     }
-}
 }
