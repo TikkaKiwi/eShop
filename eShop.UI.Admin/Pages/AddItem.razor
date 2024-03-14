@@ -9,13 +9,12 @@
                 @if (!ShowSuccessMessage)
                 {
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Picture Url</span>
+                        <span class="input-group-text" id="AddItem1">Picture Url</span>
                         <input type="text" class="form-control" placeholder="Add Picture URL" @bind="@NewProduct!.PictureUrl" aria-label="Add Picture URL" aria-describedby="addon-wrapping">
                     </div>
-                    <div class="input-group mb-3">
+                    <div class="mb-3">
                         <p>Select Car Model</p>
-                        <select class="form-select" @bind="NewProduct.ModelId" aria-label="Default select example">
-                            <option selected>@NewProduct!.ModelId</option>
+                        <select class="form-select" @bind="SelectedModelId" aria-label="Default select example">
                             @foreach (var model in Service!.Models)
                             {
                                 if (NewProduct.ModelId != model.Id)
@@ -25,23 +24,31 @@
                             }
                         </select>
                     </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon3">Car Brand</span>
-                        <input type="text" class="form-control" placeholder="Add Car Brand" @bind="@NewProduct.BrandId" aria-label="Add Car Brand" aria-describedby="addon-wrapping">
+                    <div class="mb-3">
+                        <p>Select Car Brand</p>
+                        <select class="form-select" @bind="SelectedBrandId" aria-label="Default select example">
+                            @foreach (var brand in Service!.Brands)
+                            {
+                                if (NewProduct.BrandId != brand.Id)
+                                {
+                                    <option value="@brand.Id">@brand.BrandName</option>
+                                }
+                            }
+                        </select>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon4">Year</span>
-                        <input type="text" class="form-control" placeholder="Add Year" aria-label="Add Year" aria-describedby="addon-wrapping">
+                        <span class="input-group-text" id="AddItem2">Year</span>
+                        <input type="text" class="form-control" placeholder="Add Year" @bind="@NewProduct.Year" aria-label="Add Year" aria-describedby="addon-wrapping">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon4">Description</span>
-                        <input type="text" class="form-control" placeholder="Add Description" aria-label="Add Description" aria-describedby="addon-wrapping">
+                        <span class="input-group-text" id="AddItem3">Description</span>
+                        <input type="text" class="form-control" placeholder="Add Description" @bind="@NewProduct.Description" aria-label="Add Description" aria-describedby="addon-wrapping">
                     </div>
                 }
                 else
                 {
                     <div class="alert alert-success" role="alert">
-                        Product Added successfully!
+                        Product Added successfully! Please reload page to see new Product.
                     </div>
                 }
             </div>
@@ -59,34 +66,54 @@
 @code {
     [CascadingParameter(Name = "Service")] public UIAdminService? Service { get; set; }
 
+
     public string? ConfirmMessage { get; set; }
     public CarPostDTO? NewProduct { get; set; }
     public bool ShowSuccessMessage { get; set; }
+
+    public EventCallback<CarPostDTO> OnProductSelected { get; set; }
     [Parameter]
-    public EventCallback<CarGetDTO> ProductAdded { get; set; }
+    public EventCallback<CarPostDTO> ProductAdded { get; set; }
+
+    private int SelectedModelId { get; set; } = 0;
+    private int SelectedBrandId { get; set; } = 0;
 
     protected override async Task OnInitializedAsync()
     {
+        NewProduct = NewProduct ?? new CarPostDTO();
         if (Service is not null)
         {
             await Service.GetModelsAsync();
+            await Service.GetBrandsAsync();
         }
     }
 
     private async Task AddProduct()
     {
-        await Service!.AddProductAsync(NewProduct!);
-        ShowSuccessMessage = true;
-        await ProductAdded.InvokeAsync();
-        NewProduct = null;
-        StateHasChanged();
+        if (NewProduct != null)
+        {
+            if (SelectedModelId != 0)
+            {
+                NewProduct!.ModelId = SelectedModelId;
+            }
+            if (SelectedBrandId != 0)
+            {
+                NewProduct!.BrandId = SelectedBrandId;
+            }
+
+            await Service!.AddProductAsync(NewProduct);
+            ShowSuccessMessage = true;
+            //await ProductAdded.InvokeAsync();
+            NewProduct = null; // Reset after deletion
+            StateHasChanged(); // Ensure the component re-renders to show the success message
+        }
     }
 
     public async Task ShowAddConfirmation()
     {
         ShowSuccessMessage = false;
         ConfirmMessage = "Add a Product";
-        await ProductAdded.InvokeAsync();
+        await OnProductSelected.InvokeAsync();
         StateHasChanged(); // Add this line
     }
 }

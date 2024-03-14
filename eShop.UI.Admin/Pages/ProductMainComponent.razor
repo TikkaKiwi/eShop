@@ -13,9 +13,13 @@
                 Car Brands
             </button>
             <div class="dropdown-menu" id="brandDropdownMenu">
-                @foreach (var brand in Service!.Products.Select(p => p.Brand).DistinctBy(b => b?.Id))
+                @if(Service is not null && Service.Products is not null)
                 {
-                    <a class="dropdown-item @(brand?.Id == BrandFilter?.Id ? "fas fa-angle-right" : "")" href="" @onclick="() => OnBrandFilterClick(brand)">@brand?.BrandName</a>
+                    @foreach (var brand in Service!.Products.Select(p => p.Brand).DistinctBy(b => b?.Id))
+                    {
+
+                        <a class="dropdown-item @(brand?.Id == BrandFilter?.Id ? "fas fa-angle-right" : "")" href="" @onclick="() => OnBrandFilterClick(brand)">@brand?.BrandName</a>
+                    }
                 }
             </div>
         </div>
@@ -132,13 +136,12 @@
         }
     }
 
-    private void OnProductAdd(CarGetDTO product)
+    private void OnProductAdd(CarPostDTO product)
     {
-        if (addItemComponent != null)
-        {
-            Service!.Products.Add(product);
-            StateHasChanged();
-        }
+        //If you want the page to automatically show the new Item
+
+        //Service!.Products.Add(product);
+        //StateHasChanged();
     }
 
     private async Task ShowEditModal(CarGetDTO product)
